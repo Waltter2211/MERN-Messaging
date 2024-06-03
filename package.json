@@ -1,0 +1,13 @@
+{
+  "name": "mern-messaging",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "install-deps": "cd ./backend && npm install",
+    "backend-lint": "cd ./backend && npm run lint"
+  },
+  "author": "Waltter Skogberg",
+  "license": "MIT"
+}
