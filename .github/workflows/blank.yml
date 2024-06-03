@@ -16,6 +16,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      
-      - name: Run a one-line script
+      - name: Install deps
+        run: npm install
+      - name: Run eslint
         run: npm run lint
