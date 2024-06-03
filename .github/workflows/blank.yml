@@ -17,6 +17,6 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - name: Install deps
-        run: npm install
+        run: npm run install-deps
       - name: Run eslint
-        run: npm run lint
+        run: npm run backend-lint
