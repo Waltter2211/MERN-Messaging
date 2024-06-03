@@ -5,7 +5,7 @@ import chatRoomsRouter from './routes/chatRoomRoutes/chatRooms'
 
 const app = express();
 
-const PORT = 3000;
+const PORT:any = 3000;
 const MONGOURI = 'mongodb://localhost:27017/messaging-app'
 
 app.use(express.json())
