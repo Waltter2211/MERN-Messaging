@@ -9,15 +9,16 @@ interface UserInterface {
 const userSchema = new mongoose.Schema<UserInterface>({
     name: {
         type: String,
-        required: true
+        required: true,
+        unique: true
     },
     password: {
         type: String,
         required: true
-    }/* ,
+    },
     chatRooms: {
         type: [{type: mongoose.Types.ObjectId, ref: 'chatRooms'}]
-    } */
+    }
 })
 
 export const User = mongoose.model('users', userSchema)
