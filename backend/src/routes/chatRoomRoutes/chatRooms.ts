@@ -10,6 +10,22 @@ router.get('/', async (req, res) => {
     res.send(chats)
 })
 
+router.get('/:chatRoomId', async (req, res) => {
+    try {
+        const foundChatRoom = await ChatRoom.findById({ _id: req.params.chatRoomId }).populate('users')
+        if (!foundChatRoom) {
+            throw new Error('no chatrooms found with provided id')
+        } else {
+            res.send(foundChatRoom)
+        }
+    } catch (error) {
+        if (error instanceof Error) {
+            console.log(error)
+            res.send(error.message)
+        }
+    }
+})
+
 router.post('/', async (req, res) => {
     const chatObj = req.body
     
@@ -30,11 +46,13 @@ router.post('/', async (req, res) => {
             }
         } else {
             console.log('user not found')
-            res.status(404).send('user not found')
+            throw new Error('user not found')
         }
     } catch (error) {
-        console.log(error)
-        res.send('server error')
+        if (error instanceof Error) {
+            console.log(error)
+            res.send(error.message)
+        }
     }
 })
 
@@ -62,12 +80,14 @@ router.put('/:chatRoomId/:userId', jsonTokenVerifier, async (req, res) => {
                 await foundChatRoom.save()
                 res.send({message: 'message sent successfully', content: messageObj})
             } else {
-                res.status(401).send('user not authorized to send messages')
+                throw new Error('user not authorized to send messages')
             }
         }
     } catch (error) {
-        console.log(error)
-        res.send('some error happened')
+        if (error instanceof Error) {
+            console.log(error)
+            res.send(error.message)
+        }
     }
 })
 
