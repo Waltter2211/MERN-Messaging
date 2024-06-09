@@ -2,7 +2,13 @@ import mongoose from 'mongoose'
 
 interface ChatRoomInterface {
     users:mongoose.Types.ObjectId[]
-    messages:string[]
+    messages:MessageBody[]
+}
+
+interface MessageBody {
+    sender:string
+    messageBody:string
+    timestamps:Date
 }
 
 const chatRoomSchema = new mongoose.Schema<ChatRoomInterface>({
@@ -10,7 +16,7 @@ const chatRoomSchema = new mongoose.Schema<ChatRoomInterface>({
         type: [{type: mongoose.Types.ObjectId, ref: 'users'}]
     },
     messages: {
-        type: [{type: String}]
+        type: [{type: Object}]
     }
 })
 

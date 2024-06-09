@@ -1,6 +1,7 @@
 import express from 'express'
 import { ChatRoom } from '../../models/chatRoom'
 import { User } from '../../models/user'
+import { jsonTokenVerifier } from '../../utils/jsonTokenVerifierMiddleware'
 
 const router = express.Router()
 
@@ -29,10 +30,44 @@ router.post('/', async (req, res) => {
             }
         } else {
             console.log('user not found')
+            res.status(404).send('user not found')
         }
     } catch (error) {
         console.log(error)
         res.send('server error')
+    }
+})
+
+router.put('/:chatRoomId/:userId', jsonTokenVerifier, async (req, res) => {
+    const validChatRoom = req.params.chatRoomId
+    const validUser = req.params.userId
+
+    try {
+        const foundChatRoom = await ChatRoom.findOne({_id: validChatRoom})
+        if (foundChatRoom === null) {
+            throw new Error('no chatroom found')
+        }
+        else if (foundChatRoom) {
+            const foundUser = await User.findOne({_id: validUser})
+            if (foundUser === null) {
+                throw new Error('no valid user found')
+            }
+            else if (foundChatRoom.users.includes(foundUser._id)) {
+                const messageObj = {
+                    sender: foundUser.name,
+                    messageBody: req.body.messageBody,
+                    timestamps: new Date()
+                }
+                foundChatRoom.messages.push(messageObj)
+                await foundChatRoom.save()
+                res.send({message: 'message sent successfully', content: messageObj})
+            } else {
+                res.status(401).send('user not authorized to send messages')
+            }
+        }
+    } catch (error) {
+        console.log(error)
+        res.send('some error happened')
     }
 })
 
