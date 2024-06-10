@@ -1,9 +1,9 @@
 import { BrowserRouter, Route, Routes } from 'react-router-dom'
 import './App.css'
-import ProductComponent from './components/ProductComponent'
-import ServicesComponent from './components/ServicesComponent'
 import NotFoundComponent from './components/NotFoundComponent'
 import LandingPageComponent from './components/LandingPageComponent'
+import LoginComponent from './components/LoginComponent'
+import RegisterComponent from './components/RegisterComponent'
 
 const App = () => {
 
@@ -11,8 +11,8 @@ const App = () => {
     <BrowserRouter>
       <Routes>
         <Route path='/' element={<LandingPageComponent />} />
-        <Route path='/products' element={<ProductComponent />} />
-        <Route path='/services' element={<ServicesComponent />} />
+        <Route path='/login' element={<LoginComponent />} />
+        <Route path='/register' element={<RegisterComponent />} />
         <Route path='*' element={<NotFoundComponent />} />
       </Routes>
     </BrowserRouter>
