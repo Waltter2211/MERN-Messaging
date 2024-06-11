@@ -4,6 +4,7 @@ import NotFoundComponent from './components/NotFoundComponent'
 import LandingPageComponent from './components/LandingPageComponent'
 import LoginComponent from './components/LoginComponent'
 import RegisterComponent from './components/RegisterComponent'
+import ProfilePageComponent from './components/ProfilePageComponent'
 
 const App = () => {
 
@@ -13,6 +14,7 @@ const App = () => {
         <Route path='/' element={<LandingPageComponent />} />
         <Route path='/login' element={<LoginComponent />} />
         <Route path='/register' element={<RegisterComponent />} />
+        <Route path='/profile' element={<ProfilePageComponent />} />
         <Route path='*' element={<NotFoundComponent />} />
       </Routes>
     </BrowserRouter>
