@@ -5,8 +5,8 @@ const RegisterComponent = () => {
     <div className="landingPageBackground">
         <div className="landingPageBackgroundOverlay">
             <div className="landingPageSelection">
-                <h2><Link to={'/'}>Home</Link></h2>
-                <h2>Register</h2>
+              <h2>Register</h2>
+              <Link to={'/'}>Home</Link>
             </div>
         </div>
     </div>
