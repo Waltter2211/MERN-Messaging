@@ -12,13 +12,20 @@ router.get('/', async (req, res) => {
 router.post('/', async (req, res) => {
     const userObj = req.body
     try {
-        const hashedPass = await bcrypt.hash(userObj.password, 10)
-        userObj.password = hashedPass
-        await User.create(userObj)
-        res.send({message: 'created', userObj})
+        const foundUser = await User.findOne({ name: userObj.name })
+        if (foundUser) {
+            res.status(401).send({ message: 'user with that name has already been registered' })
+        } else {
+            const hashedPass = await bcrypt.hash(userObj.password, 10)
+            userObj.password = hashedPass
+            await User.create(userObj)
+            res.send({message: 'user successfully created', userObj})
+        }
     } catch (error) {
-        console.log(error)
-        res.send(error)
+        if (error instanceof Error) {
+            console.log(error)
+            res.status(401).send({error: error.message})
+        }
     }
 })
 

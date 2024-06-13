@@ -13,11 +13,11 @@ router.post('/', async (req, res) => {
     const foundUser = await User.findOne({ email: userCredentials.email })
     try {
         if (!foundUser) {
-            res.status(404).send({message: 'no user with that email found'})
+            res.status(404).send({ message: 'no user with that email found' })
         } else {
             const decodedPass = await bcrypt.compare(userCredentials.password, foundUser.password)
             if (!decodedPass) {
-                res.status(401).send({message: 'wrong password'})
+                res.status(401).send({ message: 'wrong password' })
             } else {
                 if (jwtToken === undefined) {
                     throw new Error('no jwt secret found')
@@ -29,7 +29,10 @@ router.post('/', async (req, res) => {
         }
     } catch (error) {
         console.log(error)
-        res.send('server error')
+        if (error instanceof Error) {
+            console.log(error)
+            res.send(error.message)
+        }
     }
 })
 

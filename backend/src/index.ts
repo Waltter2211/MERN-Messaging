@@ -3,7 +3,7 @@ import cors from 'cors'
 import mongoose from 'mongoose'
 import usersRouter from './routes/userRoutes/users'
 import chatRoomsRouter from './routes/chatRoomRoutes/chatRooms'
-import loginRouter from './routes/login/login'
+import loginRouter from './routes/loginRoutes/login'
 
 const app = express();
 const PORT = 3000;
