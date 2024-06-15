@@ -1,9 +1,10 @@
-import { useState } from "react"
+import { useContext, useState } from "react"
 import { Link, useNavigate } from "react-router-dom"
 import { loginService } from "../services/loginService"
 
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import { UserContext } from "../utils/UserContext";
 
 const LoginComponent = () => {
 
@@ -18,6 +19,10 @@ const LoginComponent = () => {
     theme: "colored",
     /* transition: Zoom, */
   });
+
+  const user = useContext(UserContext)
+
+  console.log(user)
 
   const navigate = useNavigate()
 
@@ -53,6 +58,7 @@ const LoginComponent = () => {
     else {
       localStorage.setItem('token', userCreds.token)
       localStorage.setItem('email', userCreds.userCredentials.email)
+      user.setLoggedInUser({name: '', email: userCreds.userCredentials.email, sessionToken: userCreds.token})
       navigate('/profile')
     }
   }
