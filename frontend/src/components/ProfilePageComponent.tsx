@@ -2,13 +2,14 @@ import { useContext } from "react"
 import { UserContext } from "../utils/UserContext"
 import { useQuery } from "react-query"
 import { userService } from "../services/userService"
-import { ChatroomType } from "../types/chatRoomTypes"
+import { ChatRoomType } from "../types/chatRoomTypes"
+import ChatroomSingle from "./ChatRoomSingle"
 
 const ProfilePageComponent = () => {
 
-  const user = useContext(UserContext)
+  const currentUser = useContext(UserContext)
 
-  const { data, isLoading, error, refetch } = useQuery('userChatroomData', () => userService(user.loggedInUser.email, user.loggedInUser.sessionToken))
+  const { data, isLoading, error, refetch } = useQuery('userChatroomData', () => userService(currentUser.loggedInUser.email, currentUser.loggedInUser.sessionToken))
 
   const handleRefresh = () => {
     refetch()
@@ -25,7 +26,7 @@ const ProfilePageComponent = () => {
   return (
     <>
     <div className="profile-page-main-up">
-      <h2>logged in as {user.loggedInUser.email}</h2>
+      <h2>logged in as {currentUser.loggedInUser.email}</h2>
       <button onClick={handleRefresh}>reload</button>
       <button onClick={() => {
         localStorage.clear()
@@ -34,12 +35,10 @@ const ProfilePageComponent = () => {
     </div>
     <div className="profile-page-main-down">
       <div className="profile-page-contacts-list">
-        {chatRooms.map((room:ChatroomType) => {
+        {chatRooms.map((room:ChatRoomType) => {
           return (
             <div key={room._id}>
-              <h2>{room._id}</h2>
-              <h3>{room.users.filter((user:string) => user !== data._id)}</h3>
-              <p>{room.messages[room.messages.length - 1].sender}: {room.messages[room.messages.length - 1].messageBody}</p>
+              <ChatroomSingle chatRoomId={room._id} />
             </div>
           )
         })}

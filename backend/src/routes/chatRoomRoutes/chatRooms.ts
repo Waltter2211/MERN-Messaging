@@ -14,7 +14,7 @@ router.get('/:chatRoomId', async (req, res) => {
     try {
         const foundChatRoom = await ChatRoom.findById({ _id: req.params.chatRoomId }).populate('users')
         if (!foundChatRoom) {
-            throw new Error('no chatrooms found with provided id')
+            res.status(404).send({message: 'no chatrooms found with provided id'})
         } else {
             res.send(foundChatRoom)
         }

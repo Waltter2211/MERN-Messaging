@@ -1,5 +1,4 @@
 export const userService = async (userEmail:string, authorizationToken:string) => {
-    console.log(authorizationToken)
     const response = await fetch(`http://localhost:3000/api/users/${userEmail}`, {
         method: "GET",
         headers: {

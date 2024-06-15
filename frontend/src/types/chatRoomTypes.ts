@@ -4,8 +4,22 @@ type MessagesType = {
     timestamps:string
 }
 
-export interface ChatroomType {
+export interface ChatRoomType {
     messages:MessagesType[]
     users:string[]
+    _id:string
+}
+
+type ChatRoomSingleUsers = {
+    _id:string
+    chatRooms:string[]
+    email:string
+    name:string
+    password:string
+}
+
+export interface ChatRoomSingleType {
+    messages:MessagesType[]
+    users:ChatRoomSingleUsers[]
     _id:string
 }
