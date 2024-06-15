@@ -7,8 +7,11 @@ import RegisterComponent from './components/RegisterComponent'
 import ProfilePageComponent from './components/ProfilePageComponent'
 import { useEffect, useState } from 'react'
 import { UserContext } from './utils/UserContext'
+import { QueryClient, QueryClientProvider } from 'react-query'
 
 const App = () => {
+
+  const queryClient = new QueryClient()
 
   const [loggedInUser, setLoggedInUser] = useState({
     name: '',
@@ -27,9 +30,10 @@ const App = () => {
     }
   }, [])
   
-  console.log(loggedInUser)
+  /* console.log(loggedInUser) */
 
   return (
+    <QueryClientProvider client={queryClient}>
     <UserContext.Provider value={{ loggedInUser, setLoggedInUser }}>
       <BrowserRouter>
         <Routes>
@@ -41,7 +45,7 @@ const App = () => {
         </Routes>
       </BrowserRouter>
     </UserContext.Provider>
-    
+    </QueryClientProvider>
   )
 }
 

@@ -22,7 +22,12 @@ router.post('/', async (req, res) => {
                 if (jwtToken === undefined) {
                     throw new Error('no jwt secret found')
                 } else {
-                    const token = jwt.sign(userCredentials, jwtToken)
+                    const jwtUserObj = {
+                        id: foundUser._id,
+                        name: foundUser.name,
+                        email: userCredentials.email,
+                    }
+                    const token = jwt.sign(jwtUserObj, jwtToken)
                     res.send({ message: 'login successful', userCredentials, token })
                 }
             }

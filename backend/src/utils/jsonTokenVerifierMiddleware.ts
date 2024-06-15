@@ -1,5 +1,6 @@
-import jwt from 'jsonwebtoken'
+import jwt, { JwtPayload } from 'jsonwebtoken'
 import 'dotenv/config'
+import { jwtDecode } from 'jwt-decode'
 
 const jwtSecret = process.env.JSONTOKEN
 
@@ -15,8 +16,15 @@ export const jsonTokenVerifier = (req, res, next) => {
                 next()
             }
         } catch (error) {
-            console.log(error)
-            res.send(error)
+            if (error instanceof Error) {
+                console.log(error)
+                res.send(error.message)
+            }
         }
     }
+}
+
+export const jsonTokenDecoder = (token:string) => {
+    const decoded = jwtDecode<JwtPayload>(token)
+    return decoded
 }
