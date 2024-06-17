@@ -68,7 +68,7 @@
 .profile-page-contacts-list {
     width: 25%;
     height: 90vh;
-    background-color: brown;
+    background-color: lightblue;
 }
 
 .profile-page-message-window {
@@ -108,4 +108,24 @@
     width: 100%;
     height: 10%;
     background-color: purple;
+}
+
+.contact-list-info {
+    display: flex;
+    align-items: center;
+    column-gap: 5px;
+}
+
+.loggedInBall {
+    background-color: green;
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+}
+
+.loggedOutBall {
+    background-color: darkred;
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
 }

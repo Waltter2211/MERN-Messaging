@@ -1,4 +1,4 @@
-import { Dispatch, SetStateAction, useContext, useEffect, useState } from "react"
+import { Dispatch, SetStateAction, useContext, useState } from "react"
 import { useQuery } from "react-query"
 import { useParams } from "react-router-dom"
 import { chatRoomSendMessageService, chatRoomService } from "../services/chatRoomService"
@@ -12,20 +12,13 @@ const ChatroomSingle = ({setSelected}: {setSelected: Dispatch<SetStateAction<boo
   const currentUser = useContext(UserContext)
   const [userMessage, setUserMessage] = useState('')
   const { data, isLoading, error, refetch } = useQuery(`chatRoomSingleData${chatRoomId}`, () => chatRoomService(chatRoomId as string), {
-    refetchInterval: 2000,
-    refetchOnWindowFocus: true
+    /* refetchInterval: 2000,
+    refetchOnWindowFocus: true */
   })
-
-  useEffect(() => {
-    refetch()
-  }, [chatRoomId, refetch, data])
 
   if (isLoading) return <div>loading</div>
 
   if (error) return <div>error</div>
-
-  /* console.log(data)
-  console.log(currentUser.loggedInUser) */
 
   const { messages } = data
 

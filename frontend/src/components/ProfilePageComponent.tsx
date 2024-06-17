@@ -12,8 +12,8 @@ const ProfilePageComponent = () => {
 
   const currentUser = useContext(UserContext)
   const { data, isLoading, error, refetch } = useQuery('userChatroomData', () => userService(currentUser.loggedInUser.email, currentUser.loggedInUser.sessionToken), {
-    refetchInterval: 2000,
-    refetchOnWindowFocus: true
+    /* refetchInterval: 2000,
+    refetchOnWindowFocus: true */
   })
 
   const handleRefresh = () => {
