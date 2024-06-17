@@ -1,23 +1,23 @@
-import { chatroomService } from "../services/chatRoomService"
+import { chatRoomService } from "../services/chatRoomService"
 import { useContext, useEffect, useState } from "react"
 import { UserContext } from "../utils/UserContext"
 import { ChatRoomSingleType } from "../types/chatRoomTypes"
 
-const ChatroomSingleList = ({ chatRoomId }: { chatRoomId:string }) => {
+const ChatRoomSingleList = ({ chatRoomId }: { chatRoomId:string }) => {
 
   const currentUser = useContext(UserContext)
 
   const [chatRoomData, setChatRoomData] = useState<ChatRoomSingleType | null>(null)
 
   useEffect(() => {
-    chatroomService(chatRoomId).then((data) => {
+    chatRoomService(chatRoomId).then((data) => {
         setChatRoomData(data)
     })
   }, [chatRoomId])
 
   if (chatRoomData === null) return <div>loading</div>
 
-  console.log(chatRoomData)
+  /* console.log(chatRoomData) */
 
   const filteredUser = chatRoomData.users.filter((user) => user.email !== currentUser.loggedInUser.email)
 
@@ -31,4 +31,4 @@ const ChatroomSingleList = ({ chatRoomId }: { chatRoomId:string }) => {
   )
 }
 
-export default ChatroomSingleList
+export default ChatRoomSingleList

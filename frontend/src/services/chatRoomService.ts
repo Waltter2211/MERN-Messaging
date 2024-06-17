@@ -1,4 +1,4 @@
-export const chatroomService = async (chatRoomId:string) => {
+export const chatRoomService = async (chatRoomId:string) => {
     const response = await fetch(`http://localhost:3000/api/chatRooms/${chatRoomId}`, {
         method: "GET",
     })

@@ -1,4 +1,4 @@
-type MessagesType = {
+export type MessagesType = {
     sender:string
     messageBody:string
     timestamps:string
