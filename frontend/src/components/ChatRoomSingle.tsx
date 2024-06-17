@@ -1,32 +1,19 @@
-import { chatroomService } from "../services/chatRoomService"
-import { useContext, useEffect, useState } from "react"
-import { UserContext } from "../utils/UserContext"
-import { ChatRoomSingleType } from "../types/chatRoomTypes"
+import { Dispatch, SetStateAction } from "react"
+import { useParams } from "react-router-dom"
 
-const ChatroomSingle = ({ chatRoomId }: { chatRoomId:string }) => {
+const ChatroomSingle = ({setSelected}: {setSelected: Dispatch<SetStateAction<boolean>>}) => {
 
-  const currentUser = useContext(UserContext)
+  const { chatRoomId } = useParams()
 
-  const [chatRoomData, setChatRoomData] = useState<ChatRoomSingleType | null>(null)
-
-  useEffect(() => {
-    chatroomService(chatRoomId).then((data) => {
-        setChatRoomData(data)
-    })
-  }, [chatRoomId])
-
-  if (chatRoomData === null) return <div>loading</div>
-
-  console.log(chatRoomData)
-
-  const filteredUser = chatRoomData.users.filter((user) => user.email !== currentUser.loggedInUser.email)
+  const handleExitWindow = () => {
+    setSelected(false)
+  }
 
   return (
     <div>
-        <h2>{filteredUser[0].name}</h2>
-        {chatRoomData.messages.length === 0
-        ? <p>no messages sent</p>
-        : <p>{chatRoomData.messages[chatRoomData.messages.length -1]?.sender}: {chatRoomData.messages[chatRoomData.messages.length -1]?.messageBody}</p> }
+        <h1>ChatroomSingle</h1>
+        <p>{chatRoomId}</p>
+        <button onClick={handleExitWindow}>X</button>
     </div>
   )
 }
