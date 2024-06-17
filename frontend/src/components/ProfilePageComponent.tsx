@@ -10,8 +10,10 @@ import { Link } from "react-router-dom"
 const ProfilePageComponent = () => {
 
   const currentUser = useContext(UserContext)
-
-  const { data, isLoading, error, refetch } = useQuery('userChatroomData', () => userService(currentUser.loggedInUser.email, currentUser.loggedInUser.sessionToken))
+  const { data, isLoading, error, refetch } = useQuery('userChatroomData', () => userService(currentUser.loggedInUser.email, currentUser.loggedInUser.sessionToken), {
+    refetchInterval: 2000,
+    refetchOnWindowFocus: true
+  })
 
   const handleRefresh = () => {
     refetch()

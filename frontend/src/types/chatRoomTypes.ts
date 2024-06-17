@@ -10,7 +10,7 @@ export interface ChatRoomType {
     _id:string
 }
 
-type ChatRoomSingleUsers = {
+export type ChatRoomSingleUsers = {
     _id:string
     chatRooms:string[]
     email:string

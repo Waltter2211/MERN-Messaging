@@ -1,32 +1,33 @@
 import { chatRoomService } from "../services/chatRoomService"
-import { useContext, useEffect, useState } from "react"
+import { useContext } from "react"
 import { UserContext } from "../utils/UserContext"
-import { ChatRoomSingleType } from "../types/chatRoomTypes"
+import { useQuery } from "react-query"
+import { ChatRoomSingleUsers } from "../types/chatRoomTypes"
 
 const ChatRoomSingleList = ({ chatRoomId }: { chatRoomId:string }) => {
 
   const currentUser = useContext(UserContext)
 
-  const [chatRoomData, setChatRoomData] = useState<ChatRoomSingleType | null>(null)
+  const { data, isLoading, error, refetch } = useQuery(`chatRoomSingleData${chatRoomId}`, () => chatRoomService(chatRoomId), {
+    refetchInterval: 2000,
+    refetchOnWindowFocus: true
+  })
 
-  useEffect(() => {
-    chatRoomService(chatRoomId).then((data) => {
-        setChatRoomData(data)
-    })
-  }, [chatRoomId, chatRoomData])
+  if (isLoading) return <div>loading</div>
 
-  if (chatRoomData === null) return <div>loading</div>
+  if (error) return <div>error</div>
 
-  /* console.log(chatRoomData) */
+  const { users, messages } = data
 
-  const filteredUser = chatRoomData.users.filter((user) => user.email !== currentUser.loggedInUser.email)
+  const filteredUser = users.filter((user:ChatRoomSingleUsers) => user.email !== currentUser.loggedInUser.email)
 
   return (
     <div>
         <h2>{filteredUser[0].name}</h2>
-        {chatRoomData.messages.length === 0
+        {messages.length === 0
         ? <p>no messages sent</p>
-        : <p>{chatRoomData.messages[chatRoomData.messages.length -1]?.sender}: {chatRoomData.messages[chatRoomData.messages.length -1]?.messageBody}</p> }
+        : <p>{messages[messages.length -1]?.sender}: {messages[messages.length -1]?.messageBody}</p> }
+        <button onClick={() => refetch()}>refetch</button>
     </div>
   )
 }
