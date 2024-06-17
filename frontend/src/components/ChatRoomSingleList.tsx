@@ -13,7 +13,7 @@ const ChatRoomSingleList = ({ chatRoomId }: { chatRoomId:string }) => {
     chatRoomService(chatRoomId).then((data) => {
         setChatRoomData(data)
     })
-  }, [chatRoomId])
+  }, [chatRoomId, chatRoomData])
 
   if (chatRoomData === null) return <div>loading</div>
 

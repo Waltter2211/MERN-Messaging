@@ -1,6 +1,6 @@
 import { SetStateAction } from "react"
 
-type LoggedInUser = {
+export type LoggedInUser = {
     name:string
     email:string
     sessionToken:string

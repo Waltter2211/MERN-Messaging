@@ -2,7 +2,7 @@ export const userService = async (userEmail:string, authorizationToken:string) =
     const response = await fetch(`http://localhost:3000/api/users/${userEmail}`, {
         method: "GET",
         headers: {
-            'Authorization': `Bearer ${authorizationToken}`
+            "Authorization": `Bearer ${authorizationToken}`
         }
     })
 
