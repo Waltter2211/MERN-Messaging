@@ -33,7 +33,7 @@ const ProfilePageComponent = () => {
 
   if (error) return <div>error</div>
 
-  /* console.log(data) */
+  console.log(data)
 
   const { chatRooms } = data
 
@@ -46,7 +46,9 @@ const ProfilePageComponent = () => {
     </div>
     <div className="profile-page-main-down">
       <div className="profile-page-contacts-list">
-        {chatRooms.map((room:ChatRoomType) => {
+        {data.chatRooms.length === 0
+        ? <p>no chats in list</p>
+        : chatRooms.map((room:ChatRoomType) => {
           return (
             <div key={room._id} className="profile-page-contacts-list-room" onClick={() => setSelected(true)}>
               <Link to={`${room._id}`}><ChatroomSingleList chatRoomId={room._id} /></Link>
