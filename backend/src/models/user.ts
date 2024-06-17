@@ -5,6 +5,7 @@ interface UserInterface {
     email:string
     password:string
     chatRooms:mongoose.Types.ObjectId[]
+    isOnline:boolean
 }
 
 const userSchema = new mongoose.Schema<UserInterface>({
@@ -23,6 +24,11 @@ const userSchema = new mongoose.Schema<UserInterface>({
     },
     chatRooms: {
         type: [{type: mongoose.Types.ObjectId, ref: 'chatRooms'}]
+    },
+    isOnline: {
+        type: Boolean,
+        required: true,
+        default: false
     }
 })
 

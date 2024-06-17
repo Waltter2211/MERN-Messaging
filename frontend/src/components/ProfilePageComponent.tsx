@@ -6,6 +6,7 @@ import { ChatRoomType } from "../types/chatRoomTypes"
 import ChatroomSingleList from "./ChatRoomSingleList"
 import ChatroomSingle from "./ChatRoomSingle"
 import { Link } from "react-router-dom"
+import { logoutService } from "../services/loginService"
 
 const ProfilePageComponent = () => {
 
@@ -17,6 +18,13 @@ const ProfilePageComponent = () => {
 
   const handleRefresh = () => {
     refetch()
+  }
+
+  const handleLogout = () => {
+    logoutService(currentUser.loggedInUser.email, currentUser.loggedInUser.sessionToken).then(() => {
+      localStorage.clear()
+      location.reload()
+    })
   }
 
   const [selected, setSelected] = useState(false)
@@ -34,10 +42,7 @@ const ProfilePageComponent = () => {
     <div className="profile-page-main-up">
       <h2>logged in as {currentUser.loggedInUser.email}</h2>
       <button onClick={handleRefresh}>reload</button>
-      <button onClick={() => {
-        localStorage.clear()
-        location.reload()
-      }}>logout</button>
+      <button onClick={handleLogout}>logout</button>
     </div>
     <div className="profile-page-main-down">
       <div className="profile-page-contacts-list">

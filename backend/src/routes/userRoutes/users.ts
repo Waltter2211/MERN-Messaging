@@ -49,4 +49,29 @@ router.post('/', async (req, res) => {
     }
 })
 
+router.put('/:userEmail', jsonTokenVerifier, async (req, res) => {
+    const token = req.headers.authorization
+    try {
+        if (token) {
+            const decodedToken = jsonTokenDecoder(token)
+            if (req.params.userEmail === decodedToken.email) {
+                const foundUser = await User.findOne({ email: req.params.userEmail })
+                if (foundUser) {
+                    const updatedFoundUserObj = {...foundUser, isOnline: foundUser.isOnline = false}
+                    await User.findByIdAndUpdate({ _id: foundUser._id }, updatedFoundUserObj)
+                    res.send({ message: 'successfully logged out' })
+                } else {
+                    res.status(404).send({ message: 'user not found' })
+                }
+            } else {
+                res.status(401).send({ message: 'no valid session token found' })
+            }
+        } else {
+            res.status(401).send({ message: 'no token found' })
+        }
+    } catch (error) {
+        console.log(error)
+    }
+})
+
 export default router

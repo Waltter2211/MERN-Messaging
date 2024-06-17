@@ -17,3 +17,19 @@ export const loginService = async (userObj:LoginObj) => {
         return result
     }
 }
+
+export const logoutService = async (userId:string, sessionToken:string) => {
+    const response = await fetch(`http://localhost:3000/api/users/${userId}`, {
+        method: "PUT",
+        headers: {
+            "Authorization": `Bearer ${sessionToken}`
+        }
+    })
+    if (response.status === 404 || response.status === 401) {
+        const responseObj = await response.json()
+        return {status: response.status, message: responseObj.message}
+    } else {
+        const result = await response.json()
+        return result
+    }
+}

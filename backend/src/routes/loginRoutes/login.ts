@@ -22,13 +22,19 @@ router.post('/', async (req, res) => {
                 if (jwtToken === undefined) {
                     throw new Error('no jwt secret found')
                 } else {
-                    const jwtUserObj = {
-                        id: foundUser._id,
-                        name: foundUser.name,
-                        email: userCredentials.email,
+                    if (foundUser.isOnline === true) {
+                        res.status(401).send({ message: 'user already logged in' })
+                    } else {
+                        const updatedFoundUser = {...foundUser, isOnline: foundUser.isOnline = true}
+                        await User.findByIdAndUpdate({ _id: foundUser._id }, updatedFoundUser)
+                        const jwtUserObj = {
+                            id: foundUser._id,
+                            name: foundUser.name,
+                            email: userCredentials.email,
+                        }
+                        const token = jwt.sign(jwtUserObj, jwtToken)
+                        res.send({ message: 'login successful', userCredentials, token })
                     }
-                    const token = jwt.sign(jwtUserObj, jwtToken)
-                    res.send({ message: 'login successful', userCredentials, token })
                 }
             }
         }
