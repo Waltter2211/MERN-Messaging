@@ -1,4 +1,4 @@
-import { Dispatch, SetStateAction, useContext, useState } from "react"
+import { Dispatch, SetStateAction, useContext, useEffect, useRef, useState } from "react"
 import { useQuery } from "react-query"
 import { useParams } from "react-router-dom"
 import { chatRoomSendMessageService, chatRoomService } from "../services/chatRoomService"
@@ -16,6 +16,14 @@ const ChatroomSingle = ({setSelected}: {setSelected: Dispatch<SetStateAction<boo
     refetchOnWindowFocus: true */
   })
 
+  const chatRef = useRef<HTMLDivElement>(null)
+
+  useEffect(() => {
+    if (chatRef.current) {
+      chatRef.current.scrollIntoView({ block: 'nearest' })
+    }
+  }, [data.messages])
+
   if (isLoading) return <div>loading</div>
 
   if (error) return <div>error</div>
@@ -30,11 +38,11 @@ const ChatroomSingle = ({setSelected}: {setSelected: Dispatch<SetStateAction<boo
     event.preventDefault()
     const currentUserId = data.users.filter((user:LoggedInUser) => user.email === currentUser.loggedInUser.email)
     const messageObj = {
-        messageBody: userMessage
+      messageBody: userMessage
     }
     chatRoomSendMessageService(data._id, currentUserId[0]._id, currentUser.loggedInUser.sessionToken, messageObj).then(() => {
-        refetch()
-        setUserMessage('')
+      refetch()
+      setUserMessage('')
     })
   }
 
@@ -45,16 +53,17 @@ const ChatroomSingle = ({setSelected}: {setSelected: Dispatch<SetStateAction<boo
             <p>{chatRoomId}</p>
             <button onClick={handleExitWindow}>X</button>
         </div>
-        <div className="single-chat-room-messages-list-div">
+        <div className="single-chat-room-messages-list-div" id="messages-div">
             {messages.map((message:MessagesType, index:number) => {
                 return (
-                    <div key={index}>
-                        <h3>{message.sender}</h3>
-                        <p>{message.messageBody}</p>
-                        <p>{message.timestamps}</p>
-                    </div>
+                  <div key={index}>
+                    <h3>{message.sender}</h3>
+                    <p>{message.messageBody}</p>
+                    <p>{message.timestamps}</p>
+                  </div>
                 )
             })}
+            <div ref={chatRef}></div>
         </div>
         <div className="single-chat-room-input-div">
             <form onSubmit={handleMessageSubmit}>

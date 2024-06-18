@@ -33,7 +33,7 @@ const ProfilePageComponent = () => {
 
   if (error) return <div>error</div>
 
-  console.log(data)
+  /* console.log(selected) */
 
   const { chatRooms } = data
 
