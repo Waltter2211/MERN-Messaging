@@ -112,7 +112,6 @@ router.put('/:chatRoomId/:userId', jsonTokenVerifier, async (req, res) => {
         } else {
             res.status(404).send({message: 'no authorization token found'})
         }
-        
     } catch (error) {
         if (error instanceof Error) {
             console.log(error)

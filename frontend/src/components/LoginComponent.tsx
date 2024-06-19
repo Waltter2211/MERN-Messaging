@@ -1,7 +1,6 @@
 import { useContext, useState } from "react"
 import { Link, useNavigate } from "react-router-dom"
 import { loginService } from "../services/loginService"
-
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { UserContext } from "../utils/UserContext";
@@ -22,7 +21,7 @@ const LoginComponent = () => {
 
   const user = useContext(UserContext)
 
-  console.log(user)
+  /* console.log(user) */
 
   const navigate = useNavigate()
 
