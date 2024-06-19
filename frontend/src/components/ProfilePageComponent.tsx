@@ -7,13 +7,14 @@ import ChatroomSingleList from "./ChatRoomSingleList"
 import ChatroomSingle from "./ChatRoomSingle"
 import { Link } from "react-router-dom"
 import { logoutService } from "../services/loginService"
+import AddNewContactComponent from "./AddNewContactComponent"
 
 const ProfilePageComponent = () => {
 
   const currentUser = useContext(UserContext)
   const { data, isLoading, error, refetch } = useQuery('userChatroomData', () => userService(currentUser.loggedInUser.email, currentUser.loggedInUser.sessionToken), {
-    /* refetchInterval: 2000,
-    refetchOnWindowFocus: true */
+    refetchInterval: 2000,
+    refetchOnWindowFocus: true
   })
 
   const handleRefresh = () => {
@@ -28,6 +29,7 @@ const ProfilePageComponent = () => {
   }
 
   const [selected, setSelected] = useState(false)
+  const [newContactSelected, setNewContactSelected] = useState(false)
 
   if (isLoading) return <div>loading</div>
 
@@ -55,10 +57,14 @@ const ProfilePageComponent = () => {
             </div>
           )
         })}
+        <div className="add-new-contact-button-div">
+          <button className="add-new-contact-button" onClick={() => setNewContactSelected(!newContactSelected)}>+</button>
+        </div>
       </div>
       <div className="profile-page-message-window">
         {selected ? <ChatroomSingle setSelected={setSelected} /> : <p>no current chat rooms</p>}
       </div>
+      {newContactSelected ? <AddNewContactComponent newContactSelected={newContactSelected} setNewContactSelected={setNewContactSelected} /> : <div></div>}
     </div>
     </>
   )

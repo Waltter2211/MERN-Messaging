@@ -26,28 +26,47 @@ router.get('/:chatRoomId', async (req, res) => {
     }
 })
 
-router.post('/', async (req, res) => {
-    const chatObj = req.body
-    
+router.post('/:userEmail', jsonTokenVerifier, async (req, res) => {
+    const token = req.headers.authorization
     try {
-        const user1Obj = await User.findById({_id: chatObj.users[0]})
-        const user2Obj = await User.findById({_id: chatObj.users[1]})
-        if (user1Obj && user2Obj) {
-            await ChatRoom.create(chatObj)
-            const newChat = await ChatRoom.findOne({ users: [chatObj.users[0], chatObj.users[1]] })
-            if (newChat === null) {
-                throw new Error('some error with creating chat happened')
+        if (token) {
+            const decodedToken = jsonTokenDecoder(token)
+            if (req.params.userEmail === decodedToken.email) {
+                const user1Obj = await User.findOne({ email: req.params.userEmail })
+                const user2Obj = await User.findOne({ email: req.body.user })
+                if (user1Obj && user2Obj) {
+                    if (user1Obj.email === user2Obj.email) {
+                        res.status(401).send({ message: 'cannot create room with yourself' })
+                    } else {
+                        const chatObj = {
+                            users: [user1Obj._id, user2Obj._id]
+                        }
+                        const foundRoom = await ChatRoom.findOne({ $or: [ { users: [chatObj.users[0], chatObj.users[1] ] }, { users: [chatObj.users[1], chatObj.users[0] ] } ] })
+                        if (foundRoom) {
+                            res.status(401).send({ message: 'room already exists' })
+                        } else {
+                            await ChatRoom.create(chatObj)
+                            const newChat = await ChatRoom.findOne({ users: [chatObj.users[0], chatObj.users[1]] })
+                            if (newChat === null) {
+                                throw new Error('some error with creating chat happened')
+                            } else {
+                                const updatedUser1Obj = {...user1Obj, chatRooms: user1Obj.chatRooms.push(newChat._id)}
+                                const updatedUser2Obj = {...user2Obj, chatRooms: user2Obj.chatRooms.push(newChat._id)}
+                                await User.findByIdAndUpdate({ _id: chatObj.users[0] }, updatedUser1Obj)
+                                await User.findByIdAndUpdate({ _id: chatObj.users[1] }, updatedUser2Obj)
+                                res.send({message: 'successfully added user to contacts'})
+                            } 
+                        }
+                    }
+                } else {
+                    res.status(404).send({ message: 'user not found' })
+                }
             } else {
-                const updatedUser1Obj = {...user1Obj, chatRooms: user1Obj.chatRooms.push(newChat._id)}
-                const updatedUser2Obj = {...user2Obj, chatRooms: user2Obj.chatRooms.push(newChat._id)}
-                await User.findByIdAndUpdate({ _id: chatObj.users[0] }, updatedUser1Obj)
-                await User.findByIdAndUpdate({ _id: chatObj.users[1] }, updatedUser2Obj)
-                res.send({user1: user1Obj, user2: user2Obj})
+                res.status(401).send({message: 'no user matches this session'})
             }
         } else {
-            console.log('user not found')
-            throw new Error('user not found')
-        }
+            res.status(404).send({message: 'no authorization token found'})
+        }        
     } catch (error) {
         if (error instanceof Error) {
             console.log(error)
@@ -88,7 +107,7 @@ router.put('/:chatRoomId/:userId', jsonTokenVerifier, async (req, res) => {
                     }
                 }
             } else {
-                res.status(401).send({message: 'no user id matches this session'})
+                res.status(401).send({message: 'no user matches this session'})
             }
         } else {
             res.status(404).send({message: 'no authorization token found'})

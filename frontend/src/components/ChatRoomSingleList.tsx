@@ -19,7 +19,7 @@ const ChatRoomSingleList = ({ chatRoomId }: { chatRoomId:string }) => {
 
   const { users, messages } = data
 
-  console.log(users)
+  /* console.log(users) */
 
   const filteredUser = users.filter((user:ChatRoomSingleUsers) => user.email !== currentUser.loggedInUser.email)
 

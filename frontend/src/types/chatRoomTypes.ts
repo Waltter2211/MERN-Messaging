@@ -27,3 +27,7 @@ export interface ChatRoomSingleType {
 export interface UserSentMessageType {
     messageBody:string
 }
+
+export type RecipientUserType = {
+    user:string
+}
