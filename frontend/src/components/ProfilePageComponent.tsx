@@ -12,14 +12,10 @@ import AddNewContactComponent from "./AddNewContactComponent"
 const ProfilePageComponent = () => {
 
   const currentUser = useContext(UserContext)
-  const { data, isLoading, error, refetch } = useQuery('userChatroomData', () => userService(currentUser.loggedInUser.email, currentUser.loggedInUser.sessionToken), {
+  const { data, isLoading, error } = useQuery('userChatroomData', () => userService(currentUser.loggedInUser.email, currentUser.loggedInUser.sessionToken), {
     refetchInterval: 2000,
     refetchOnWindowFocus: true
   })
-
-  const handleRefresh = () => {
-    refetch()
-  }
 
   const handleLogout = () => {
     logoutService(currentUser.loggedInUser.email, currentUser.loggedInUser.sessionToken).then(() => {
@@ -42,9 +38,9 @@ const ProfilePageComponent = () => {
   return (
     <>
     <div className="profile-page-main-up">
-      <h2>logged in as {currentUser.loggedInUser.email}</h2>
-      <button onClick={handleRefresh}>reload</button>
-      <button onClick={handleLogout}>logout</button>
+      <h2>MERN-Messaging</h2>
+      <h2>{currentUser.loggedInUser.email}</h2>
+      <i onClick={handleLogout} className="fa-solid fa-power-off power-button"></i>
     </div>
     <div className="profile-page-main-down">
       <div className="profile-page-contacts-list">
@@ -58,7 +54,7 @@ const ProfilePageComponent = () => {
           )
         })}
         <div className="add-new-contact-button-div">
-          <button className="add-new-contact-button" onClick={() => setNewContactSelected(!newContactSelected)}>+</button>
+          <i className="fa-solid fa-plus add-new-contact-button" onClick={() => setNewContactSelected(!newContactSelected)}></i>
         </div>
       </div>
       <div className="profile-page-message-window">

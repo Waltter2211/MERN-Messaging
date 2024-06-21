@@ -77,7 +77,7 @@ const AddNewContactComponent = ({setNewContactSelected, newContactSelected}: {ne
             </div>
             <h2>Add new contact</h2>
             <form onSubmit={handleUserSearch}>
-                <input type="text" onChange={handleUserSearchInput} />
+                <input type="text" placeholder="Enter user email address" onChange={handleUserSearchInput} />
                 <button type="submit">add</button>
             </form>
         </div>

@@ -8,7 +8,7 @@ const ChatRoomSingleList = ({ chatRoomId }: { chatRoomId:string }) => {
 
   const currentUser = useContext(UserContext)
 
-  const { data, isLoading, error, refetch } = useQuery(`chatRoomSingleData${chatRoomId}`, () => chatRoomService(chatRoomId), {
+  const { data, isLoading, error } = useQuery(`chatRoomSingleData${chatRoomId}`, () => chatRoomService(chatRoomId), {
     refetchInterval: 2000,
     refetchOnWindowFocus: true
   })
@@ -24,7 +24,7 @@ const ChatRoomSingleList = ({ chatRoomId }: { chatRoomId:string }) => {
   const filteredUser = users.filter((user:ChatRoomSingleUsers) => user.email !== currentUser.loggedInUser.email)
 
   return (
-    <div>
+    <div className="contact-list-div">
       <div className="contact-list-info">
       <h2>{filteredUser[0].name}</h2>
       {filteredUser[0].isOnline ? <div className="loggedInBall"></div> : <div className="loggedOutBall"></div>}
@@ -32,7 +32,6 @@ const ChatRoomSingleList = ({ chatRoomId }: { chatRoomId:string }) => {
         {messages.length === 0
         ? <p>no messages sent</p>
         : <p>{messages[messages.length -1]?.sender}: {messages[messages.length -1]?.messageBody}</p> }
-        <button onClick={() => refetch()}>refetch</button>
     </div>
   )
 }
