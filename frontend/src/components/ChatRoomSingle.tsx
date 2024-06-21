@@ -2,7 +2,7 @@ import { Dispatch, SetStateAction, useContext, useEffect, useRef, useState } fro
 import { useQuery } from "react-query"
 import { useParams } from "react-router-dom"
 import { chatRoomSendMessageService, chatRoomService } from "../services/chatRoomService"
-import { MessagesType } from "../types/chatRoomTypes"
+import { ChatRoomSingleUsers, MessagesType } from "../types/chatRoomTypes"
 import { UserContext } from "../utils/UserContext"
 import { LoggedInUser } from "../types/userContextTypes"
 
@@ -12,7 +12,7 @@ const ChatroomSingle = ({setSelected}: {setSelected: Dispatch<SetStateAction<boo
   const currentUser = useContext(UserContext)
   const [userMessage, setUserMessage] = useState('')
   const { data, isLoading, error, refetch } = useQuery(`chatRoomSingleData${chatRoomId}`, () => chatRoomService(chatRoomId as string), {
-    /* refetchInterval: 2000,
+    /* refetchInterval: 2000a
     refetchOnWindowFocus: true */
   })
 
@@ -28,7 +28,7 @@ const ChatroomSingle = ({setSelected}: {setSelected: Dispatch<SetStateAction<boo
 
   if (error) return <div>error</div>
 
-  const { messages } = data
+  const { messages, users } = data
 
   const handleExitWindow = () => {
     setSelected(false)
@@ -46,20 +46,24 @@ const ChatroomSingle = ({setSelected}: {setSelected: Dispatch<SetStateAction<boo
     })
   }
 
+  const filteredUser = users.filter((user:ChatRoomSingleUsers) => user.email !== currentUser.loggedInUser.email)
+  const filteredCurrentUser = users.filter((user:ChatRoomSingleUsers) => user.email === currentUser.loggedInUser.email)
+
   return (
     <div className="single-chat-room-div">
         <div className="single-chat-room-info-div">
-            <h1>ChatroomSingle</h1>
-            <p>{chatRoomId}</p>
-            <button onClick={handleExitWindow}>X</button>
+          <h1>{filteredUser[0].name}</h1>
+          <i className="fa-solid fa-x close-button" onClick={handleExitWindow}></i>
         </div>
         <div className="single-chat-room-messages-list-div" id="messages-div">
-            {messages.map((message:MessagesType, index:number) => {
+            {messages.length === 0 ? <div>Start chatting with {filteredUser[0].name} by sending a message</div> : messages.map((message:MessagesType, index:number) => {
                 return (
-                  <div key={index}>
-                    <h3>{message.sender}</h3>
-                    <p>{message.messageBody}</p>
-                    <p>{message.timestamps}</p>
+                  <div className={message.sender === filteredCurrentUser[0].name ? "single-message-div-self" : "single-message-div"} key={index}>
+                    {/* <h3>{message.sender}</h3> */}
+                    <div className={message.sender === filteredCurrentUser[0].name ? "single-message-content-div-self" : "single-message-content-div"}>
+                      <p className="single-message-content">{message.messageBody}</p>
+                      <p className="single-message-timestamp">{message.timestamps.substring(0, 5)}</p>
+                    </div>
                   </div>
                 )
             })}
@@ -67,8 +71,8 @@ const ChatroomSingle = ({setSelected}: {setSelected: Dispatch<SetStateAction<boo
         </div>
         <div className="single-chat-room-input-div">
             <form onSubmit={handleMessageSubmit}>
-                <input type="text" onChange={(event) => setUserMessage(event.target.value)} value={userMessage} />
-                <button type="submit">Send</button>
+                <textarea placeholder="Message..." onChange={(event) => setUserMessage(event.target.value)} value={userMessage} />
+                <button className="submit-button" type="submit"><i className="fa-solid fa-square-caret-right"></i></button>
             </form>
         </div>
     </div>

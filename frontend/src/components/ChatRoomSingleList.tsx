@@ -30,7 +30,7 @@ const ChatRoomSingleList = ({ chatRoomId }: { chatRoomId:string }) => {
       {filteredUser[0].isOnline ? <div className="loggedInBall"></div> : <div className="loggedOutBall"></div>}
       </div>
         {messages.length === 0
-        ? <p>no messages sent</p>
+        ? <p>No messages sent</p>
         : <p>{messages[messages.length -1]?.sender}: {messages[messages.length -1]?.messageBody}</p> }
     </div>
   )

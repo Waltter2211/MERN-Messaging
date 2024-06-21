@@ -44,21 +44,23 @@ const ProfilePageComponent = () => {
     </div>
     <div className="profile-page-main-down">
       <div className="profile-page-contacts-list">
-        {data.chatRooms.length === 0
-        ? <p>no chats in list</p>
-        : chatRooms.map((room:ChatRoomType) => {
-          return (
-            <div key={room._id} className="profile-page-contacts-list-room" onClick={() => setSelected(true)}>
-              <Link to={`${room._id}`}><ChatroomSingleList chatRoomId={room._id} /></Link>
-            </div>
-          )
-        })}
+        <div className="profile-page-contacts-list-div">
+          {data.chatRooms.length === 0
+          ? <p>No chats in list</p>
+          : chatRooms.map((room:ChatRoomType) => {
+            return (
+              <div key={room._id} className="profile-page-contacts-list-room" onClick={() => setSelected(true)}>
+                <Link to={`${room._id}`}><ChatroomSingleList chatRoomId={room._id} /></Link>
+              </div>
+            )
+          })}
+        </div>
         <div className="add-new-contact-button-div">
           <i className="fa-solid fa-plus add-new-contact-button" onClick={() => setNewContactSelected(!newContactSelected)}></i>
         </div>
       </div>
       <div className="profile-page-message-window">
-        {selected ? <ChatroomSingle setSelected={setSelected} /> : <p>no current chat rooms</p>}
+        {selected ? <ChatroomSingle setSelected={setSelected} /> : <p>No current active chat rooms</p>}
       </div>
       {newContactSelected ? <AddNewContactComponent newContactSelected={newContactSelected} setNewContactSelected={setNewContactSelected} /> : <div></div>}
     </div>

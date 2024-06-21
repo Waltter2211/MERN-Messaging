@@ -19,13 +19,13 @@ router.get('/:userEmail', jsonTokenVerifier, async (req, res) => {
             if (foundUser) {
                 res.send(foundUser)
             } else {
-                res.status(404).send({message: 'no user found'})
+                res.status(404).send({ message: 'No user found' })
             }
         } else {
-            res.status(401).send({message: 'no email matches this session'})
+            res.status(401).send({ message: 'No email matches this session' })
         }
     } else {
-        res.status(404).send({message: 'no authorization token found'})
+        res.status(404).send({ message: 'No authorization token found' })
     }
 })
 
@@ -34,12 +34,12 @@ router.post('/', async (req, res) => {
     try {
         const foundUser = await User.findOne({ name: userObj.name })
         if (foundUser) {
-            res.status(401).send({ message: 'user with that name has already been registered' })
+            res.status(401).send({ message: 'User with that name has already been registered' })
         } else {
             const hashedPass = await bcrypt.hash(userObj.password, 10)
             userObj.password = hashedPass
             await User.create(userObj)
-            res.send({message: 'user successfully created', userObj})
+            res.send({ message: 'User successfully created', userObj })
         }
     } catch (error) {
         if (error instanceof Error) {
@@ -59,15 +59,15 @@ router.put('/:userEmail', jsonTokenVerifier, async (req, res) => {
                 if (foundUser) {
                     const updatedFoundUserObj = {...foundUser, isOnline: foundUser.isOnline = false}
                     await User.findByIdAndUpdate({ _id: foundUser._id }, updatedFoundUserObj)
-                    res.send({ message: 'successfully logged out' })
+                    res.send({ message: 'Successfully logged out' })
                 } else {
-                    res.status(404).send({ message: 'user not found' })
+                    res.status(404).send({ message: 'User not found' })
                 }
             } else {
-                res.status(401).send({ message: 'no valid session token found' })
+                res.status(401).send({ message: 'No valid session token found' })
             }
         } else {
-            res.status(401).send({ message: 'no token found' })
+            res.status(401).send({ message: 'No token found' })
         }
     } catch (error) {
         console.log(error)

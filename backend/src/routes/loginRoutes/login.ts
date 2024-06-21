@@ -13,17 +13,17 @@ router.post('/', async (req, res) => {
     const foundUser = await User.findOne({ email: userCredentials.email })
     try {
         if (!foundUser) {
-            res.status(404).send({ message: 'no user with that email found' })
+            res.status(404).send({ message: 'No user with that email found' })
         } else {
             const decodedPass = await bcrypt.compare(userCredentials.password, foundUser.password)
             if (!decodedPass) {
-                res.status(401).send({ message: 'wrong password' })
+                res.status(401).send({ message: 'Wrong password' })
             } else {
                 if (jwtToken === undefined) {
-                    throw new Error('no jwt secret found')
+                    throw new Error('No jwt secret found')
                 } else {
                     if (foundUser.isOnline === true) {
-                        res.status(401).send({ message: 'user already logged in' })
+                        res.status(401).send({ message: 'User already logged in' })
                     } else {
                         const updatedFoundUser = {...foundUser, isOnline: foundUser.isOnline = true}
                         await User.findByIdAndUpdate({ _id: foundUser._id }, updatedFoundUser)
@@ -33,7 +33,7 @@ router.post('/', async (req, res) => {
                             email: userCredentials.email,
                         }
                         const token = jwt.sign(jwtUserObj, jwtToken)
-                        res.send({ message: 'login successful', userCredentials, token })
+                        res.send({ message: 'Login successful', userCredentials, token })
                     }
                 }
             }

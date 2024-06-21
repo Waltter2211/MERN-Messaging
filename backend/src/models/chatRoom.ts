@@ -8,7 +8,7 @@ interface ChatRoomInterface {
 interface MessageBody {
     sender:string
     messageBody:string
-    timestamps:Date
+    timestamps:string
 }
 
 const chatRoomSchema = new mongoose.Schema<ChatRoomInterface>({

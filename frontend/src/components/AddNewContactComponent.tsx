@@ -71,16 +71,20 @@ const AddNewContactComponent = ({setNewContactSelected, newContactSelected}: {ne
     /* transition: Zoom, */
     />
     <div className="add-new-contact-popup-background-div">
-        <div className="add-new-contact-popup-div">
-            <div>
-                <button onClick={() => setNewContactSelected(!newContactSelected)}>X</button>
-            </div>
-            <h2>Add new contact</h2>
-            <form onSubmit={handleUserSearch}>
-                <input type="text" placeholder="Enter user email address" onChange={handleUserSearchInput} />
-                <button type="submit">add</button>
-            </form>
+      <div className="add-new-contact-popup-div">
+        <div className="add-new-contact-popup-div-up">
+          <div className="add-new-contact-popup-close-div">
+            <i className="fa-solid fa-x close-button" onClick={() => setNewContactSelected(!newContactSelected)}></i>
+          </div>
         </div>
+        <div className="add-new-contact-popup-div-down">
+          <h2>Add new contact</h2>
+            <form onSubmit={handleUserSearch}>
+              <input type="text" placeholder="Enter user email address" onChange={handleUserSearchInput} />
+              <button type="submit">add</button>
+            </form>
+          </div>
+      </div>
     </div>
     </>
     
