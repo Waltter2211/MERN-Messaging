@@ -18,6 +18,6 @@ const chatRoomSchema = new mongoose.Schema<ChatRoomInterface>({
     messages: {
         type: [{type: Object}]
     }
-})
+}, { timestamps:true })
 
 export const ChatRoom = mongoose.model('chatRooms', chatRoomSchema)

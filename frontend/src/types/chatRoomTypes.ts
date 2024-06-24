@@ -5,8 +5,10 @@ export type MessagesType = {
 }
 
 export interface ChatRoomType {
+    createdAt:string
     messages:MessagesType[]
-    users:string[]
+    updatedAt:string
+    users:ChatRoomSingleUsers[]
     _id:string
 }
 
@@ -18,11 +20,11 @@ export type ChatRoomSingleUsers = {
     password:string
 }
 
-export interface ChatRoomSingleType {
+/* export interface ChatRoomSingleType {
     messages:MessagesType[]
     users:ChatRoomSingleUsers[]
     _id:string
-}
+} */
 
 export interface UserSentMessageType {
     messageBody:string

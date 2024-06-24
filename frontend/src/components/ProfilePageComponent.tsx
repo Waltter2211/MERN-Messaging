@@ -31,9 +31,9 @@ const ProfilePageComponent = () => {
 
   if (error) return <div>error</div>
 
-  /* console.log(selected) */
-
   const { chatRooms } = data
+
+  chatRooms.sort((roomA:ChatRoomType, roomB:ChatRoomType) => roomB.updatedAt.localeCompare(roomA.updatedAt))
 
   return (
     <>
