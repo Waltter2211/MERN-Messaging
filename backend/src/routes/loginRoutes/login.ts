@@ -1,4 +1,4 @@
-import express from 'express'
+import { Request, Response } from 'express'
 import bcrypt from 'bcrypt'
 import { User } from '../../models/user'
 import jwt from 'jsonwebtoken'
@@ -6,9 +6,7 @@ import 'dotenv/config'
 
 const jwtToken = process.env.JSONTOKEN
 
-const router = express.Router()
-
-router.post('/', async (req, res) => {
+export const login = async (req:Request, res:Response) => {
     const userCredentials = req.body
     const foundUser = await User.findOne({ email: userCredentials.email })
     try {
@@ -45,6 +43,4 @@ router.post('/', async (req, res) => {
             res.send(error.message)
         }
     }
-})
-
-export default router
+}

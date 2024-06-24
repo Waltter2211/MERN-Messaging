@@ -1,16 +1,14 @@
-import express from 'express'
+import { Request, Response } from 'express'
 import { ChatRoom } from '../../models/chatRoom'
 import { User } from '../../models/user'
-import { jsonTokenVerifier, jsonTokenDecoder } from '../../utils/jsonTokenVerifierMiddleware'
+import { jsonTokenDecoder } from '../../utils/jsonTokenVerifierMiddleware'
 
-const router = express.Router()
-
-router.get('/', async (req, res) => {
+export const findChatRooms = async (_req:Request, res:Response) => {
     const chats = await ChatRoom.find({}).populate('users')
     res.send(chats)
-})
+}
 
-router.get('/:chatRoomId', async (req, res) => {
+export const findChatRoom = async (req:Request, res:Response) => {
     try {
         const foundChatRoom = await ChatRoom.findById({ _id: req.params.chatRoomId }).populate('users')
         if (!foundChatRoom) {
@@ -24,9 +22,9 @@ router.get('/:chatRoomId', async (req, res) => {
             res.send(error.message)
         }
     }
-})
+}
 
-router.post('/:userEmail', jsonTokenVerifier, async (req, res) => {
+export const createNewChatRoom = async (req:Request, res:Response) => {
     const token = req.headers.authorization
     try {
         if (token) {
@@ -73,9 +71,9 @@ router.post('/:userEmail', jsonTokenVerifier, async (req, res) => {
             res.send(error.message)
         }
     }
-})
+}
 
-router.put('/:chatRoomId/:userId', jsonTokenVerifier, async (req, res) => {
+export const sendMessageToChatRoom = async (req:Request, res:Response) => {
     const validChatRoom = req.params.chatRoomId
     const validUser = req.params.userId
     const token = req.headers.authorization
@@ -118,6 +116,4 @@ router.put('/:chatRoomId/:userId', jsonTokenVerifier, async (req, res) => {
             res.send(error.message)
         }
     }
-})
-
-export default router
+}

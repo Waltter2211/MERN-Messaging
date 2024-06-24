@@ -1,16 +1,14 @@
-import express from 'express'
+import { Request, Response } from 'express'
 import bcrypt from 'bcrypt'
 import { User } from '../../models/user'
-import { jsonTokenDecoder, jsonTokenVerifier } from '../../utils/jsonTokenVerifierMiddleware'
+import { jsonTokenDecoder } from '../../utils/jsonTokenVerifierMiddleware'
 
-const router = express.Router()
-
-router.get('/', async (req, res) => {
+export const findUsers = async (_req:Request, res:Response) => {
     const users = await User.find({})
     res.send(users)
-})
+}
 
-router.get('/:userEmail', jsonTokenVerifier, async (req, res) => {
+export const findUser = async (req:Request, res:Response) => {
     const token = req.headers.authorization
     if (token) {
         const decodedToken = jsonTokenDecoder(token)
@@ -27,9 +25,9 @@ router.get('/:userEmail', jsonTokenVerifier, async (req, res) => {
     } else {
         res.status(404).send({ message: 'No authorization token found' })
     }
-})
+}
 
-router.post('/', async (req, res) => {
+export const createUser = async (req:Request, res:Response) => {
     const userObj = req.body
     try {
         const foundUser = await User.findOne({ name: userObj.name })
@@ -47,9 +45,9 @@ router.post('/', async (req, res) => {
             res.status(401).send({error: error.message})
         }
     }
-})
+}
 
-router.put('/:userEmail', jsonTokenVerifier, async (req, res) => {
+export const logout = async (req:Request, res:Response) => {
     const token = req.headers.authorization
     try {
         if (token) {
@@ -72,6 +70,4 @@ router.put('/:userEmail', jsonTokenVerifier, async (req, res) => {
     } catch (error) {
         console.log(error)
     }
-})
-
-export default router
+}

@@ -1,9 +1,9 @@
 import express from 'express'
 import cors from 'cors'
 import mongoose from 'mongoose'
-import usersRouter from './routes/userRoutes/users'
-import chatRoomsRouter from './routes/chatRoomRoutes/chatRooms'
-import loginRouter from './routes/loginRoutes/login'
+import usersRouter from './routes/userRoutes/usersIndex'
+import chatRoomsRouter from './routes/chatRoomRoutes/chatRoomIndex'
+import loginRouter from './routes/loginRoutes/loginIndex'
 
 const app = express();
 const PORT = 3000;
@@ -18,3 +18,5 @@ app.use('/api/login', loginRouter)
 mongoose.connect(MONGOURI).then(() => console.log('connected to database'))
 
 app.listen(PORT, () => console.log('connected to server'))
+
+export default app
