@@ -3,6 +3,7 @@ import bcrypt from 'bcrypt'
 import { User } from '../../models/user'
 import jwt from 'jsonwebtoken'
 import 'dotenv/config'
+import { jwtDecode } from 'jwt-decode'
 
 const jwtToken = process.env.JSONTOKEN
 
@@ -43,4 +44,16 @@ export const login = async (req:Request, res:Response) => {
             res.send(error.message)
         }
     }
+}
+
+export const verifySession = async (req:Request, res:Response) => {
+    const token = req.headers.authorization
+
+    if (token) {
+        const decodedToken = jwtDecode(token)
+        res.send(decodedToken)
+    } else {
+        res.status(404).send({ message: 'Token not found' })
+    }
+
 }

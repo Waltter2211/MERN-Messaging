@@ -8,6 +8,7 @@ import ProfilePageComponent from './components/ProfilePageComponent'
 import { useEffect, useState } from 'react'
 import { UserContext } from './utils/UserContext'
 import { QueryClient, QueryClientProvider } from 'react-query'
+import { verifySessionService } from './services/loginService'
 
 const App = () => {
 
@@ -20,17 +21,20 @@ const App = () => {
   })
 
   useEffect(() => {
-    const localStrorageUserEmailObj = localStorage.getItem('email')
     const localStrorageUserTokenObj = localStorage.getItem('token')
-    if (localStrorageUserEmailObj && localStrorageUserTokenObj) {
-      setLoggedInUser({name: '', email: localStrorageUserEmailObj, sessionToken: localStrorageUserTokenObj})
-    } else {
-      setLoggedInUser({name: '', email: '', sessionToken: ''})
-      localStorage.clear()
+    const verifyUserSession = async () => {
+      if (localStrorageUserTokenObj) {
+        const userCreds = await verifySessionService(localStrorageUserTokenObj)
+        setLoggedInUser({name: userCreds.name, email: userCreds.email, sessionToken: localStrorageUserTokenObj})
+      } else {
+        setLoggedInUser({name: '', email: '', sessionToken: ''})
+        localStorage.clear()
+      }
     }
-  }, [])
+    verifyUserSession()
+  }, [loggedInUser.name, loggedInUser.sessionToken])
   
-  /* console.log(loggedInUser) */
+  console.log(loggedInUser)
 
   return (
     <QueryClientProvider client={queryClient}>

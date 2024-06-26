@@ -1,33 +1,11 @@
 import React, { Dispatch, SetStateAction, useContext, useState } from "react"
 import { UserContext } from "../utils/UserContext"
 import { createNewChatRoomService } from "../services/chatRoomService"
-import { ToastContainer, toast } from "react-toastify"
+import { ToastContainer } from "react-toastify"
+import { logoutService } from "../services/loginService"
+import { notifyError, notifySuccess } from "../services/toastifyService"
 
 const AddNewContactComponent = ({setNewContactSelected, newContactSelected}: {newContactSelected:React.ComponentState, setNewContactSelected:Dispatch<SetStateAction<boolean>>}) => {
-  
-  const notifyError = (message:string) => toast.error(message, {
-    position: "top-center",
-    autoClose: 5000,
-    hideProgressBar: false,
-    closeOnClick: true,
-    pauseOnHover: true,
-    draggable: true,
-    progress: undefined,
-    theme: "colored",
-    /* transition: Zoom, */
-  });
-
-  const notifySuccess = (message:string) => toast.success(message, {
-    position: "top-center",
-    autoClose: 5000,
-    hideProgressBar: false,
-    closeOnClick: true,
-    pauseOnHover: true,
-    draggable: true,
-    progress: undefined,
-    theme: "colored",
-    /* transition: Zoom, */
-  });
 
   const currentUser = useContext(UserContext)
 
@@ -42,16 +20,25 @@ const AddNewContactComponent = ({setNewContactSelected, newContactSelected}: {ne
     const recipientObj = {
       user: userSearch
     }
-    const foundUserData = await createNewChatRoomService(currentUser.loggedInUser.email, recipientObj, currentUser.loggedInUser.sessionToken)
-    console.log(foundUserData)
-    if (foundUserData.status === 404) {
-      notifyError(foundUserData.message)
-    }
-    else if (foundUserData.status === 401) {
-      notifyError(foundUserData.message)
-    }
-    else {
-      notifySuccess(foundUserData.message)
+    const localStrorageUserTokenObj = localStorage.getItem('token')
+
+    if (localStrorageUserTokenObj) {
+      const foundUserData = await createNewChatRoomService(currentUser.loggedInUser.email, recipientObj, currentUser.loggedInUser.sessionToken)
+      if (foundUserData.status === 404) {
+        notifyError(foundUserData.message)
+      }
+      else if (foundUserData.status === 401) {
+        notifyError(foundUserData.message)
+      }
+      else {
+        notifySuccess(foundUserData.message)
+      }
+    } else {
+      notifyError('Session token has expired, please login again')
+      logoutService(currentUser.loggedInUser.email, currentUser.loggedInUser.sessionToken)
+      setTimeout(() => {
+        location.reload()
+      },  5000)
     }
   }
 

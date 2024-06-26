@@ -1,23 +1,12 @@
 import { useContext, useState } from "react"
 import { Link, useNavigate } from "react-router-dom"
 import { loginService } from "../services/loginService"
-import { ToastContainer, toast } from 'react-toastify';
+import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { UserContext } from "../utils/UserContext";
+import { notifyError } from "../services/toastifyService";
 
 const LoginComponent = () => {
-
-  const notifyError = (message:string) => toast.error(message, {
-    position: "top-center",
-    autoClose: 5000,
-    hideProgressBar: false,
-    closeOnClick: true,
-    pauseOnHover: true,
-    draggable: true,
-    progress: undefined,
-    theme: "colored",
-    /* transition: Zoom, */
-  });
 
   const user = useContext(UserContext)
 
@@ -56,7 +45,6 @@ const LoginComponent = () => {
     }
     else {
       localStorage.setItem('token', userCreds.token)
-      localStorage.setItem('email', userCreds.userCredentials.email)
       user.setLoggedInUser({name: '', email: userCreds.userCredentials.email, sessionToken: userCreds.token})
       navigate('/profile')
     }

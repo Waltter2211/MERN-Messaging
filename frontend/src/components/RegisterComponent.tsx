@@ -2,22 +2,11 @@ import { useState } from "react"
 import { Link, useNavigate } from "react-router-dom"
 import { registerService } from "../services/registerService"
 
-import { ToastContainer, toast } from 'react-toastify';
+import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import { notifyError } from "../services/toastifyService";
 
 const RegisterComponent = () => {
-
-  const notifyError = (message:string) => toast.error(message, {
-    position: "top-center",
-    autoClose: 5000,
-    hideProgressBar: false,
-    closeOnClick: true,
-    pauseOnHover: true,
-    draggable: true,
-    progress: undefined,
-    theme: "colored",
-    /* transition: Zoom, */
-  });
 
   const navigate = useNavigate()
 

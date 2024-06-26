@@ -5,6 +5,9 @@ import { chatRoomSendMessageService, chatRoomService } from "../services/chatRoo
 import { ChatRoomSingleUsers, MessagesType } from "../types/chatRoomTypes"
 import { UserContext } from "../utils/UserContext"
 import { LoggedInUser } from "../types/userContextTypes"
+import { logoutService } from "../services/loginService"
+import { ToastContainer } from "react-toastify"
+import { notifyError } from "../services/toastifyService"
 
 const ChatroomSingle = ({setSelected}: {setSelected: Dispatch<SetStateAction<boolean>>}) => {
 
@@ -40,16 +43,41 @@ const ChatroomSingle = ({setSelected}: {setSelected: Dispatch<SetStateAction<boo
     const messageObj = {
       messageBody: userMessage
     }
-    chatRoomSendMessageService(data._id, currentUserId[0]._id, currentUser.loggedInUser.sessionToken, messageObj).then(() => {
-      refetch()
-      setUserMessage('')
-    })
+
+    const localStrorageUserTokenObj = localStorage.getItem('token')
+
+    if (localStrorageUserTokenObj) {
+      chatRoomSendMessageService(data._id, currentUserId[0]._id, localStrorageUserTokenObj, messageObj).then(() => {
+        refetch()
+        setUserMessage('')
+      })
+    } else {
+      notifyError('Session token has expired, please login again')
+      logoutService(currentUser.loggedInUser.email, currentUser.loggedInUser.sessionToken)
+      setTimeout(() => {
+        location.reload()
+      },  5000)
+    }
   }
 
   const filteredUser = users.filter((user:ChatRoomSingleUsers) => user.email !== currentUser.loggedInUser.email)
   const filteredCurrentUser = users.filter((user:ChatRoomSingleUsers) => user.email === currentUser.loggedInUser.email)
 
   return (
+    <>
+    <ToastContainer
+    position="top-center"
+    autoClose={5000}
+    hideProgressBar={false}
+    newestOnTop={false}
+    closeOnClick
+    rtl={false}
+    pauseOnFocusLoss
+    draggable
+    pauseOnHover
+    theme="colored"
+    /* transition: Zoom, */
+    />
     <div className="single-chat-room-div">
         <div className="single-chat-room-info-div">
           <h1>{filteredUser[0].name}</h1>
@@ -76,6 +104,7 @@ const ChatroomSingle = ({setSelected}: {setSelected: Dispatch<SetStateAction<boo
             </form>
         </div>
     </div>
+    </>
   )
 }
 
