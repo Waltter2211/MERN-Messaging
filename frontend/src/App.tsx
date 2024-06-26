@@ -33,8 +33,6 @@ const App = () => {
     }
     verifyUserSession()
   }, [loggedInUser.name, loggedInUser.sessionToken])
-  
-  console.log(loggedInUser)
 
   return (
     <QueryClientProvider client={queryClient}>
