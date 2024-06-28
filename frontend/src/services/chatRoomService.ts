@@ -1,9 +1,9 @@
 import { RecipientUserType, UserSentMessageType } from "../types/chatRoomTypes"
 
+/* http://localhost:3000/ */
+
 export const chatRoomService = async (chatRoomId:string) => {
-    const response = await fetch(`http://localhost:3000/api/chatRooms/${chatRoomId}`, {
-        method: "GET",
-    })
+    const response = await fetch(`${import.meta.env.VITE_BACKEND_URL}/api/chatRooms/${chatRoomId}`)
 
     if (response.status === 404) {
         const responseObj = await response.json()
@@ -15,7 +15,7 @@ export const chatRoomService = async (chatRoomId:string) => {
 }
 
 export const chatRoomSendMessageService = async (chatRoomId:string, userId:string, authorizationToken:string, messageObj:UserSentMessageType) => {
-    const response = await fetch(`http://localhost:3000/api/chatRooms/${chatRoomId}/${userId}`, {
+    const response = await fetch(`${import.meta.env.VITE_BACKEND_URL}/api/chatRooms/${chatRoomId}/${userId}`, {
         method: "PUT",
         headers: {
             "Content-Type": "application/json",
@@ -34,7 +34,7 @@ export const chatRoomSendMessageService = async (chatRoomId:string, userId:strin
 }
 
 export const createNewChatRoomService = async (userEmail:string, recipientUserEmail:RecipientUserType, sessionToken:string) => {
-    const response = await fetch(`http://localhost:3000/api/chatRooms/${userEmail}`, {
+    const response = await fetch(`${import.meta.env.VITE_BACKEND_URL}/api/chatRooms/${userEmail}`, {
         method: "POST",
         headers: {
             "Content-Type": "application/json",

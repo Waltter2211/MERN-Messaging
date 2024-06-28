@@ -1,5 +1,5 @@
 export const userService = async (userEmail:string, authorizationToken:string) => {
-    const response = await fetch(`http://localhost:3000/api/users/${userEmail}`, {
+    const response = await fetch(`${import.meta.env.VITE_BACKEND_URL}/api/users/${userEmail}`, {
         method: "GET",
         headers: {
             "Authorization": `Bearer ${authorizationToken}`

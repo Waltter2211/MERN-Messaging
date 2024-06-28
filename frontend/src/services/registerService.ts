@@ -1,7 +1,7 @@
 import { RegisterObj } from "../types/registerTypes"
 
 export const registerService = async (userObj:RegisterObj) => {
-    const response = await fetch('http://localhost:3000/api/users', {
+    const response = await fetch(`${import.meta.env.VITE_BACKEND_URL}/api/users`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json"

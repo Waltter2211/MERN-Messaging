@@ -63,11 +63,11 @@ const RegisterComponent = () => {
           <div className="form-div">
             <form onSubmit={handleRegister}>
               <h3>Name</h3>
-              <input type="text" name="name" onChange={handleRegisterForm} value={registerCreds.name} />
+              <input type="text" required={true} minLength={3} name="name" onChange={handleRegisterForm} value={registerCreds.name} />
               <h3>Email</h3>
-              <input type="email" name="email" onChange={handleRegisterForm} value={registerCreds.email} />
+              <input type="email" required={true} minLength={5} name="email" onChange={handleRegisterForm} value={registerCreds.email} />
               <h3>Password</h3>
-              <input type="password" name="password" onChange={handleRegisterForm} value={registerCreds.password} />
+              <input type="password" required={true} minLength={3} name="password" onChange={handleRegisterForm} value={registerCreds.password} />
               <br></br>
               <button type="submit">Register</button>
             </form>

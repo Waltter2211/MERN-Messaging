@@ -1,0 +1,38 @@
+version: '3.8'
+
+services:
+  mongo:
+    image: mongo
+    container_name: mongo-cont
+    ports:
+      - '27016:27017'
+    networks:
+      - fs-app
+    
+  backend:
+    build: ./backend
+    container_name: mern-messaging-backend-cont
+    ports:
+      - '3001:3000'
+    depends_on:
+      - mongo
+    environment:
+      - MONGO_URL=mongodb://mongo:27017/messaging-app-prod
+    networks:
+      - fs-app
+
+  frontend:
+    build: ./frontend
+    container_name: mern-messaging-frontend-cont
+    ports:
+      - '5001:5000'
+    depends_on:
+      - backend
+    environment:
+      - VITE_BACKEND_URL=http://localhost:3001
+    networks:
+      - fs-app
+
+networks:
+  fs-app:
+    driver: bridge

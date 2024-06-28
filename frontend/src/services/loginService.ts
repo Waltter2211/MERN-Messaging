@@ -1,7 +1,7 @@
 import { LoginObj } from "../types/loginTypes"
 
 export const loginService = async (userObj:LoginObj) => {
-    const response = await fetch("http://localhost:3000/api/login", {
+    const response = await fetch(`${import.meta.env.VITE_BACKEND_URL}/api/login`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json"
@@ -19,7 +19,7 @@ export const loginService = async (userObj:LoginObj) => {
 }
 
 export const logoutService = async (userId:string, sessionToken:string) => {
-    const response = await fetch(`http://localhost:3000/api/users/${userId}`, {
+    const response = await fetch(`${import.meta.env.VITE_BACKEND_URL}/api/users/${userId}`, {
         method: "PUT",
         headers: {
             "Authorization": `Bearer ${sessionToken}`
@@ -35,7 +35,7 @@ export const logoutService = async (userId:string, sessionToken:string) => {
 }
 
 export const verifySessionService = async (sessionToken:string) => {
-    const response = await fetch(`http://localhost:3000/api/login`, {
+    const response = await fetch(`${import.meta.env.VITE_BACKEND_URL}/api/login`, {
         method: "GET",
         headers: {
             "Authorization": `Bearer ${sessionToken}`

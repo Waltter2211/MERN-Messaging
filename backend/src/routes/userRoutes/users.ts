@@ -30,9 +30,10 @@ export const findUser = async (req:Request, res:Response) => {
 export const createUser = async (req:Request, res:Response) => {
     const userObj = req.body
     try {
-        const foundUser = await User.findOne({ name: userObj.name })
-        if (foundUser) {
-            res.status(401).send({ message: 'User with that name has already been registered' })
+        const foundUserName = await User.findOne({ name: userObj.name })
+        const foundUserEmail = await User.findOne({ email: userObj.email })
+        if (foundUserName || foundUserEmail) {
+            res.status(401).send({ message: 'User with that name or email has already been registered' })
         } else {
             const hashedPass = await bcrypt.hash(userObj.password, 10)
             userObj.password = hashedPass
