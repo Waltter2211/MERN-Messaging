@@ -4,6 +4,7 @@ import mongoose from 'mongoose'
 import usersRouter from './routes/userRoutes/usersIndex'
 import chatRoomsRouter from './routes/chatRoomRoutes/chatRoomIndex'
 import loginRouter from './routes/loginRoutes/loginIndex'
+import 'dotenv/config'
 
 const app = express();
 const PORT = 3000;
