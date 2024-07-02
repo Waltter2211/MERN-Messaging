@@ -55,5 +55,4 @@ export const verifySession = async (req:Request, res:Response) => {
     } else {
         res.status(404).send({ message: 'Token not found' })
     }
-
 }
