@@ -31,7 +31,7 @@ const ProfilePageComponent = () => {
 
   if (error) return <div>error</div>
 
-  const { chatRooms } = data
+  const { chatRooms } = data.user
 
   chatRooms.sort((roomA:ChatRoomType, roomB:ChatRoomType) => roomB.updatedAt.localeCompare(roomA.updatedAt))
 
@@ -45,7 +45,7 @@ const ProfilePageComponent = () => {
     <div className="profile-page-main-down">
       <div className="profile-page-contacts-list">
         <div className="profile-page-contacts-list-div">
-          {data.chatRooms.length === 0
+          {chatRooms.length === 0
           ? <p>No chats in list</p>
           : chatRooms.map((room:ChatRoomType) => {
             return (

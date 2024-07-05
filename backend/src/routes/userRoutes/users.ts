@@ -10,21 +10,26 @@ export const findUsers = async (_req:Request, res:Response) => {
 
 export const findUser = async (req:Request, res:Response) => {
     const token = req.headers.authorization
-    if (token) {
-        const decodedToken = jsonTokenDecoder(token)
-        if (req.params.userEmail === decodedToken.email) {
-            const foundUser = await User.findById({ _id: decodedToken.id }).populate('chatRooms')
-            if (foundUser) {
-                res.send(foundUser)
-            } else {
-                res.status(404).send({ message: 'No user found' })
-            }
+    try {
+        if (!token) {
+            res.status(404).send({ message: 'No authorization token found' })
         } else {
-            res.status(401).send({ message: 'No email matches this session' })
+            const decodedToken = jsonTokenDecoder(token)
+            if (req.params.userEmail !== decodedToken.email) {
+                res.status(401).send({ message: 'No email matches this session' })
+            } else {
+                const foundUser = await User.findOne({ email: decodedToken.email }).populate('chatRooms')
+                if (!foundUser) {
+                    res.status(404).send({ message: 'No user found' })
+                } else {
+                    res.send({message: 'User found', user: foundUser})
+                }
+            }
         }
-    } else {
-        res.status(404).send({ message: 'No authorization token found' })
+    } catch (error) {
+        console.log(error)
     }
+    
 }
 
 export const createUser = async (req:Request, res:Response) => {
@@ -51,24 +56,27 @@ export const createUser = async (req:Request, res:Response) => {
 export const logout = async (req:Request, res:Response) => {
     const token = req.headers.authorization
     try {
-        if (token) {
+        if (!token) {
+            res.status(404).send({ message: 'No token found' })
+        } else {
             const decodedToken = jsonTokenDecoder(token)
-            if (req.params.userEmail === decodedToken.email) {
+            if (req.params.userEmail !== decodedToken.email) {
+                res.status(401).send({ message: 'No valid session token found' })
+            } else {
                 const foundUser = await User.findOne({ email: req.params.userEmail })
-                if (foundUser) {
+                if (!foundUser) {
+                    res.status(404).send({ message: 'User not found' })
+                } else {
                     const updatedFoundUserObj = {...foundUser, isOnline: foundUser.isOnline = false}
                     await User.findByIdAndUpdate({ _id: foundUser._id }, updatedFoundUserObj)
                     res.send({ message: 'Successfully logged out' })
-                } else {
-                    res.status(404).send({ message: 'User not found' })
                 }
-            } else {
-                res.status(401).send({ message: 'No valid session token found' })
             }
-        } else {
-            res.status(401).send({ message: 'No token found' })
         }
     } catch (error) {
         /* console.log(error) */
     }
 }
+
+
+
