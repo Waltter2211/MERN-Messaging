@@ -42,7 +42,7 @@ export const createUser = async (req:Request, res:Response) => {
         }
     } catch (error) {
         if (error instanceof Error) {
-            console.log(error)
+            /* console.log(error) */
             res.status(401).send({error: error.message})
         }
     }
@@ -69,6 +69,6 @@ export const logout = async (req:Request, res:Response) => {
             res.status(401).send({ message: 'No token found' })
         }
     } catch (error) {
-        console.log(error)
+        /* console.log(error) */
     }
 }
