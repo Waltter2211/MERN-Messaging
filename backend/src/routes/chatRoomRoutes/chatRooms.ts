@@ -14,7 +14,7 @@ export const findChatRoom = async (req:Request, res:Response) => {
         if (!foundChatRoom) {
             res.status(404).send({ message: 'No chatrooms found with provided id' })
         } else {
-            res.send(foundChatRoom)
+            res.send({ message: 'Chatroom found', foundChatRoom: foundChatRoom })
         }
     } catch (error) {
         if (error instanceof Error) {
@@ -34,7 +34,7 @@ export const createNewChatRoom = async (req:Request, res:Response) => {
                 const user2Obj = await User.findOne({ email: req.body.user })
                 if (user1Obj && user2Obj) {
                     if (user1Obj.email === user2Obj.email) {
-                        res.status(401).send({ message: 'Cannot create room with yourself' })
+                        res.status(401).send({ message: 'Cannot createroom with yourself' })
                     } else {
                         const chatObj = {
                             users: [user1Obj._id, user2Obj._id]

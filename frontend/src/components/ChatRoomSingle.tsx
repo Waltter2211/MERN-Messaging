@@ -25,7 +25,7 @@ const ChatroomSingle = ({setSelected}: {setSelected: Dispatch<SetStateAction<boo
     if (chatRef.current) {
       chatRef.current.scrollIntoView({ block: 'nearest' })
     }
-  }, [data.messages])
+  }, [data?.messages])
 
   if (isLoading) return <div>loading</div>
 

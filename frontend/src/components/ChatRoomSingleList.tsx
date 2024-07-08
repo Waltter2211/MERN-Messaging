@@ -19,9 +19,9 @@ const ChatRoomSingleList = ({ chatRoomId }: { chatRoomId:string }) => {
 
   const { users, messages } = data
 
-  /* console.log(users) */
-
+  
   const filteredUser = users.filter((user:ChatRoomSingleUsers) => user.email !== currentUser.loggedInUser.email)
+  console.log(filteredUser)
 
   return (
     <div className="contact-list-div">
@@ -29,7 +29,7 @@ const ChatRoomSingleList = ({ chatRoomId }: { chatRoomId:string }) => {
       <h2>{filteredUser[0].name}</h2>
       {filteredUser[0].isOnline ? <div className="loggedInBall"></div> : <div className="loggedOutBall"></div>}
       </div>
-        {messages.length === 0
+        {data.messages.length === 0
         ? <p>No messages sent</p>
         : <p>{messages[messages.length -1]?.sender}: {messages[messages.length -1]?.messageBody}</p> }
     </div>

@@ -10,7 +10,7 @@ export const chatRoomService = async (chatRoomId:string) => {
         return {status: response.status, message: responseObj.message}
     } else {
         const result = await response.json()
-        return result
+        return result.foundChatRoom
     }
 }
 
