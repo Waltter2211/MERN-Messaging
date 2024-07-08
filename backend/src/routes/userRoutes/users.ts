@@ -18,7 +18,7 @@ export const findUser = async (req:Request, res:Response) => {
             if (req.params.userEmail !== decodedToken.email) {
                 res.status(401).send({ message: 'No email matches this session' })
             } else {
-                const foundUser = await User.findOne({ email: decodedToken.email }).populate('chatRooms')
+                const foundUser = await User.findById({ _id: decodedToken.id }).populate('chatRooms')
                 if (!foundUser) {
                     res.status(404).send({ message: 'No user found' })
                 } else {
@@ -63,7 +63,7 @@ export const logout = async (req:Request, res:Response) => {
             if (req.params.userEmail !== decodedToken.email) {
                 res.status(401).send({ message: 'No valid session token found' })
             } else {
-                const foundUser = await User.findOne({ email: req.params.userEmail })
+                const foundUser = await User.findById({ _id: decodedToken.id })
                 if (!foundUser) {
                     res.status(404).send({ message: 'User not found' })
                 } else {

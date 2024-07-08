@@ -49,10 +49,10 @@ export const login = async (req:Request, res:Response) => {
 export const verifySession = async (req:Request, res:Response) => {
     const token = req.headers.authorization
 
-    if (token) {
-        const decodedToken = jwtDecode(token)
-        res.send(decodedToken)
-    } else {
+    if (!token) {
         res.status(404).send({ message: 'Token not found' })
+    } else {
+        const decodedToken = jwtDecode(token)
+        res.send({ message: 'Session verified successfully', verifiedToken: decodedToken })
     }
 }
