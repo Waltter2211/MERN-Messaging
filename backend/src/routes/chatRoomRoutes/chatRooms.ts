@@ -52,8 +52,8 @@ export const createNewChatRoom = async (req:Request, res:Response) => {
                     } else {
                         await ChatRoom.create(chatObj)
                         const newChat = await ChatRoom.findOne({ users: [chatObj.users[0], chatObj.users[1]] })
-                        if (newChat === null) {
-                                throw new Error('Some error with creating chat happened')
+                        if (!newChat) {
+                            throw new Error('Some error with creating chat happened')
                         } else {
                             const updatedUser1Obj = {...user1Obj, chatRooms: user1Obj.chatRooms.push(newChat._id)}
                             const updatedUser2Obj = {...user2Obj, chatRooms: user2Obj.chatRooms.push(newChat._id)}
@@ -77,21 +77,27 @@ export const sendMessageToChatRoom = async (req:Request, res:Response) => {
     const validChatRoom = req.params.chatRoomId
     const validUser = req.params.userId
     const token = req.headers.authorization
-    
     try {
-        if (token) {
+        if (!token) {
+            res.status(404).send({ message: 'No authorization token found' })
+        } else {
             const decodedToken = jsonTokenDecoder(token)
-            if (req.params.userId === decodedToken.id) {
+            if (req.params.userId !== decodedToken.id) {
+                res.status(401).send({ message: 'No user matches this session' })
+            } else {
                 const foundChatRoom = await ChatRoom.findOne({_id: validChatRoom})
-                if (foundChatRoom === null) {
-                    res.status(404).send('No chatroom found')
-                }
-                else if (foundChatRoom) {
+                if (!foundChatRoom) {
+                    res.status(404).send({ message: 'No chatroom found' })
+                } else {
                     const foundUser = await User.findOne({_id: validUser})
-                    if (foundUser === null) {
-                        res.status(404).send('No valid user found')
+                    if (!foundUser) {
+                        /* res.status(404).send('No valid user found') */
+                        throw new Error('No valid user found')
                     }
-                    else if (foundChatRoom.users.includes(foundUser._id)) {
+                    else if (!foundChatRoom.users.includes(foundUser._id)) {
+                        res.status(401).send({ message: 'User not authorized to send messages' })
+                    } 
+                    else {
                         const messageObj = {
                             sender: foundUser.name,
                             messageBody: req.body.messageBody,
@@ -100,15 +106,9 @@ export const sendMessageToChatRoom = async (req:Request, res:Response) => {
                         foundChatRoom.messages.push(messageObj)
                         await foundChatRoom.save()
                         res.send({ message: 'Message sent successfully', content: messageObj })
-                    } else {
-                        res.status(401).send({ message: 'User not authorized to send messages' })
                     }
                 }
-            } else {
-                res.status(401).send({ message: 'No user matches this session' })
             }
-        } else {
-            res.status(404).send({ message: 'No authorization token found' })
         }
     } catch (error) {
         if (error instanceof Error) {
