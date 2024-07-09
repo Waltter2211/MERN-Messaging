@@ -20,3 +20,5 @@ jobs:
         run: npm run install-deps
       - name: Run eslint
         run: npm run backend-lint
+      - name: Run tests
+        run: npm run backend-tests
