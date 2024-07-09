@@ -87,12 +87,12 @@ export const sendMessageToChatRoom = async (req:Request, res:Response) => {
             } else {
                 const foundChatRoom = await ChatRoom.findOne({_id: validChatRoom})
                 if (!foundChatRoom) {
-                    res.status(404).send({ message: 'No chatroom found' })
+                    res.status(404).send({ message: 'No chatroom foun' })
                 } else {
                     const foundUser = await User.findOne({_id: validUser})
                     if (!foundUser) {
                         /* res.status(404).send('No valid user found') */
-                        throw new Error('No valid user founds')
+                        throw new Error('No valid user found')
                     }
                     else if (!foundChatRoom.users.includes(foundUser._id)) {
                         res.status(401).send({ message: 'User not authorized to send messages' })
