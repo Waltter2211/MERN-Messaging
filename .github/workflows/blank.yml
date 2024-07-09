@@ -23,4 +23,6 @@ jobs:
       - name: Run eslint
         run: npm run backend-lint
       - name: Run tests
+        env:
+          JSONTOKEN: ${{ secrets.JSONTOKEN }}
         run: npm run backend-test
