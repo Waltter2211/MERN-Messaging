@@ -87,7 +87,7 @@ export const sendMessageToChatRoom = async (req:Request, res:Response) => {
             } else {
                 const foundChatRoom = await ChatRoom.findOne({_id: validChatRoom})
                 if (!foundChatRoom) {
-                    res.status(404).send({ message: 'No chatroom foun' })
+                    res.status(404).send({ message: 'No chatroom found' })
                 } else {
                     const foundUser = await User.findOne({_id: validUser})
                     if (!foundUser) {
