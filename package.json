@@ -6,7 +6,8 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "install-deps": "cd ./backend && npm install",
-    "backend-lint": "cd ./backend && npm run lint"
+    "backend-lint": "cd ./backend && npm run lint",
+    "backend-test": "cd ./backend && npm run test"
   },
   "author": "Waltter Skogberg",
   "license": "MIT"
