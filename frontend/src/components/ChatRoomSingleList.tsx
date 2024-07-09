@@ -18,10 +18,8 @@ const ChatRoomSingleList = ({ chatRoomId }: { chatRoomId:string }) => {
   if (error) return <div>error</div>
 
   const { users, messages } = data
-
   
   const filteredUser = users.filter((user:ChatRoomSingleUsers) => user.email !== currentUser.loggedInUser.email)
-  console.log(filteredUser)
 
   return (
     <div className="contact-list-div">

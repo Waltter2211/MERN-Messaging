@@ -27,14 +27,20 @@ export const findChatRoom = async (req:Request, res:Response) => {
 export const createNewChatRoom = async (req:Request, res:Response) => {
     const token = req.headers.authorization
     try {
-        if (token) {
+        if (!token) {
+            res.status(404).send({ message: 'No authorization token found' })
+        } else {
             const decodedToken = jsonTokenDecoder(token)
-            if (req.params.userEmail === decodedToken.email) {
+            if (req.params.userEmail !== decodedToken.email) {
+                res.status(401).send({ message: 'No user matches this session' })
+            } else {
                 const user1Obj = await User.findOne({ email: req.params.userEmail })
                 const user2Obj = await User.findOne({ email: req.body.user })
-                if (user1Obj && user2Obj) {
+                if (!user1Obj || !user2Obj) {
+                    res.status(404).send({ message: 'User not found' })
+                } else {
                     if (user1Obj.email === user2Obj.email) {
-                        res.status(401).send({ message: 'Cannot createroom with yourself' })
+                        res.status(401).send({ message: 'Cannot create room with yourself' })
                     } else {
                         const chatObj = {
                             users: [user1Obj._id, user2Obj._id]
@@ -56,14 +62,8 @@ export const createNewChatRoom = async (req:Request, res:Response) => {
                             } 
                         }
                     }
-                } else {
-                    res.status(404).send({ message: 'User not found' })
                 }
-            } else {
-                res.status(401).send({ message: 'No user matches this session' })
             }
-        } else {
-            res.status(404).send({ message: 'No authorization token found' })
         }        
     } catch (error) {
         if (error instanceof Error) {
