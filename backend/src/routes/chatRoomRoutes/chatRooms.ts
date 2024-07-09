@@ -38,29 +38,29 @@ export const createNewChatRoom = async (req:Request, res:Response) => {
                 const user2Obj = await User.findOne({ email: req.body.user })
                 if (!user1Obj || !user2Obj) {
                     res.status(404).send({ message: 'User not found' })
-                } else {
-                    if (user1Obj.email === user2Obj.email) {
-                        res.status(401).send({ message: 'Cannot create room with yourself' })
-                    } else {
-                        const chatObj = {
-                            users: [user1Obj._id, user2Obj._id]
-                        }
-                        const foundRoom = await ChatRoom.findOne({ $or: [ { users: [chatObj.users[0], chatObj.users[1] ] }, { users: [chatObj.users[1], chatObj.users[0] ] } ] })
-                        if (foundRoom) {
+                }
+                else if (user1Obj.email === user2Obj.email) {
+                    res.status(401).send({ message: 'Cannot create room with yourself' })
+                }
+                else {
+                    const chatObj = {
+                        users: [user1Obj._id, user2Obj._id]
+                    }
+                    const foundRoom = await ChatRoom.findOne({ $or: [ { users: [chatObj.users[0], chatObj.users[1] ] }, { users: [chatObj.users[1], chatObj.users[0] ] } ] })
+                    if (foundRoom) {
                             res.status(401).send({ message: 'Room already exists' })
-                        } else {
-                            await ChatRoom.create(chatObj)
-                            const newChat = await ChatRoom.findOne({ users: [chatObj.users[0], chatObj.users[1]] })
-                            if (newChat === null) {
+                    } else {
+                        await ChatRoom.create(chatObj)
+                        const newChat = await ChatRoom.findOne({ users: [chatObj.users[0], chatObj.users[1]] })
+                        if (newChat === null) {
                                 throw new Error('Some error with creating chat happened')
-                            } else {
-                                const updatedUser1Obj = {...user1Obj, chatRooms: user1Obj.chatRooms.push(newChat._id)}
-                                const updatedUser2Obj = {...user2Obj, chatRooms: user2Obj.chatRooms.push(newChat._id)}
-                                await User.findByIdAndUpdate({ _id: chatObj.users[0] }, updatedUser1Obj)
-                                await User.findByIdAndUpdate({ _id: chatObj.users[1] }, updatedUser2Obj)
-                                res.send({ message: 'Successfully added user to contacts' })
-                            } 
-                        }
+                        } else {
+                            const updatedUser1Obj = {...user1Obj, chatRooms: user1Obj.chatRooms.push(newChat._id)}
+                            const updatedUser2Obj = {...user2Obj, chatRooms: user2Obj.chatRooms.push(newChat._id)}
+                            await User.findByIdAndUpdate({ _id: chatObj.users[0] }, updatedUser1Obj)
+                            await User.findByIdAndUpdate({ _id: chatObj.users[1] }, updatedUser2Obj)
+                            res.send({ message: 'Successfully added user to contacts' })
+                        } 
                     }
                 }
             }
