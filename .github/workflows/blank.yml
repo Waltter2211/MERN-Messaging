@@ -21,4 +21,4 @@ jobs:
       - name: Run eslint
         run: npm run backend-lint
       - name: Run tests
-        run: npm run backend-tests
+        run: npm run backend-test
