@@ -3,15 +3,6 @@ import supertest from "supertest";
 import mongoose from "mongoose";
 import { User } from "../../../models/user";
 
-beforeEach(async () => {
-	await mongoose.connect("mongodb://localhost:27017/acmedb")
-})
-
-afterEach(async () => {
-	await mongoose.connection.db.dropDatabase()
-	await mongoose.connection.close()
-})
-
 const userInput = {
     name: "testuser",
     email: "testuser@gmail.com",
@@ -23,6 +14,15 @@ const badUserInput = {
     email: "testuser@gmail.com",
     password: "testpass"
 }
+
+beforeEach(async () => {
+	await mongoose.connect("mongodb://localhost:27017/acmedb")
+})
+
+afterEach(async () => {
+	await mongoose.connection.db.dropDatabase()
+	await mongoose.connection.close()
+})
 
 describe("Creating new user", () => {
     it("Sends 200 OK if user credentials are valid", async () => {
@@ -38,8 +38,8 @@ describe("Creating new user", () => {
 
                 const user = await User.findOne({ email: response.body.userObj.email })
                 expect(user).toBeTruthy()
-                expect(user!.name).toBe(userInput.name)
-                expect(user!.email).toBe(userInput.email)
+                expect(user?.name).toBe(userInput.name)
+                expect(user?.email).toBe(userInput.email)
             })
         } catch (error) {
             console.log(error)

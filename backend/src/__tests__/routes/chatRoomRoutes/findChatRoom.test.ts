@@ -4,6 +4,18 @@ import mongoose from "mongoose";
 import { User } from "../../../models/user";
 import { ChatRoom } from "../../../models/chatRoom";
 
+const userInput = {
+    name: "testuser",
+    email: "testuser@gmail.com",
+    password: "testpass"
+}
+
+const userInput2 = {
+    name: "testuser2",
+    email: "testuser2@gmail.com",
+    password: "testpass2"
+}
+
 beforeEach(async () => {
 	await mongoose.connect("mongodb://localhost:27017/acmedb")
     await User.create(userInput)
@@ -17,18 +29,6 @@ afterEach(async () => {
 	await mongoose.connection.db.dropDatabase()
 	await mongoose.connection.close()
 })
-
-const userInput = {
-    name: "testuser",
-    email: "testuser@gmail.com",
-    password: "testpass"
-}
-
-const userInput2 = {
-    name: "testuser2",
-    email: "testuser2@gmail.com",
-    password: "testpass2"
-}
 
 describe("Finding chatroom", () => {
     it("Sends 200 OK if chatroom is found", async () => {

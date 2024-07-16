@@ -16,7 +16,8 @@ const chatRoomSchema = new mongoose.Schema<ChatRoomInterface>({
         type: [{type: mongoose.Types.ObjectId, ref: 'users'}]
     },
     messages: {
-        type: [{type: Object}]
+        type: [{type: mongoose.Types.ObjectId, ref: 'messages'}]
+        /* type: [{type: Object}] */
     }
 }, { timestamps:true })
 

@@ -6,18 +6,6 @@ import { User } from "../../../models/user";
 import { ChatRoom } from "../../../models/chatRoom";
 import "dotenv/config"
 
-beforeEach(async () => {
-	await mongoose.connect("mongodb://localhost:27017/acmedb")
-    await User.create(userInput)
-    await User.create(userInput2)
-    await User.create(userInput3)
-})
-
-afterEach(async () => {
-	await mongoose.connection.db.dropDatabase()
-	await mongoose.connection.close()
-})
-
 const userInput = {
     name: "testuser",
     email: "testuser@gmail.com",
@@ -41,6 +29,18 @@ const notFoundUserInput = {
     email: "testuser22@gmail.com",
     password: "testpass22"
 }
+
+beforeEach(async () => {
+	await mongoose.connect("mongodb://localhost:27017/acmedb")
+    await User.create(userInput)
+    await User.create(userInput2)
+    await User.create(userInput3)
+})
+
+afterEach(async () => {
+	await mongoose.connection.db.dropDatabase()
+	await mongoose.connection.close()
+})
 
 describe("Creating new chatroom", () => {
     it("Sends 200 OK if chatroom is successfully created", async () => {

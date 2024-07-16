@@ -2,6 +2,7 @@ import { Request, Response } from 'express'
 import { ChatRoom } from '../../models/chatRoom'
 import { User } from '../../models/user'
 import { jsonTokenDecoder } from '../../utils/jsonTokenVerifierMiddleware'
+import { Message } from '../../models/message'
 
 export const findChatRooms = async (_req:Request, res:Response) => {
     const chats = await ChatRoom.find({}).populate('users')
@@ -10,7 +11,7 @@ export const findChatRooms = async (_req:Request, res:Response) => {
 
 export const findChatRoom = async (req:Request, res:Response) => {
     try {
-        const foundChatRoom = await ChatRoom.findById({ _id: req.params.chatRoomId }).populate('users')
+        const foundChatRoom = await ChatRoom.findById({ _id: req.params.chatRoomId }).populate('users').populate('messages') // added populate for messages
         if (!foundChatRoom) {
             res.status(404).send({ message: 'No chatrooms found with provided id' })
         } else {
@@ -103,7 +104,9 @@ export const sendMessageToChatRoom = async (req:Request, res:Response) => {
                             messageBody: req.body.messageBody,
                             timestamps: new Date().toLocaleTimeString()
                         }
-                        foundChatRoom.messages.push(messageObj)
+                        /* foundChatRoom.messages.push(messageObj) */
+                        const message = await Message.create(messageObj)
+                        foundChatRoom.messages.push(message)
                         await foundChatRoom.save()
                         res.send({ message: 'Message sent successfully', content: messageObj })
                     }

@@ -5,17 +5,6 @@ import { User } from "../../../models/user";
 import jwt from "jsonwebtoken"
 import "dotenv/config"
 
-beforeEach(async () => {
-	await mongoose.connect("mongodb://localhost:27017/acmedb")
-    await User.create(userInput)
-    await User.findOneAndUpdate({ email: userInput.email, isOnline: true })
-})
-
-afterEach(async () => {
-	await mongoose.connection.db.dropDatabase()
-	await mongoose.connection.close()
-})
-
 const userInput = {
     name: "testuser",
     email: "testuser@gmail.com",
@@ -29,6 +18,17 @@ const notFoundUserInput = {
     password: "testpass11"
 }
 
+beforeEach(async () => {
+	await mongoose.connect("mongodb://localhost:27017/acmedb")
+    await User.create(userInput)
+    await User.findOneAndUpdate({ email: userInput.email, isOnline: true })
+})
+
+afterEach(async () => {
+	await mongoose.connection.db.dropDatabase()
+	await mongoose.connection.close()
+})
+
 describe("Logging user out", () => {
     it("Logs user out if user is found and logged in", async () => {
         try {
@@ -41,7 +41,7 @@ describe("Logging user out", () => {
             }
             const token = jwt.sign(foundUserObj, process.env.JSONTOKEN!)
             await supertest(app)
-            .put(`/api/users/${foundUser!.email}`)
+            .put(`/api/users/${foundUser?.email}`)
             .set("Authorization", `Bearer ${token}`)
             .send(foundUser!)
             .expect(200)

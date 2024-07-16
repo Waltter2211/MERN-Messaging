@@ -6,6 +6,12 @@ import jwt from 'jsonwebtoken'
 import { User } from "../../../models/user";
 import "dotenv/config"
 
+const userInput = {
+    name: "testuser",
+    email: "testuser@gmail.com",
+    password: bcrypt.hashSync("testpass", 10)
+}
+
 beforeEach(async () => {
 	await mongoose.connect("mongodb://localhost:27017/acmedb")
     await User.create(userInput)
@@ -15,12 +21,6 @@ afterEach(async () => {
 	await mongoose.connection.db.dropDatabase()
 	await mongoose.connection.close()
 })
-
-const userInput = {
-    name: "testuser",
-    email: "testuser@gmail.com",
-    password: bcrypt.hashSync("testpass", 10)
-}
 
 describe("Verifying session", () => {
     it("Sends 200 OK if token is found", async () => {

@@ -1,4 +1,4 @@
-/* import mongoose from 'mongoose'
+import mongoose from 'mongoose'
 
 interface MessageInterface {
     sender:string
@@ -14,7 +14,11 @@ const messageSchema = new mongoose.Schema<MessageInterface>({
     messageBody: {
         type: String,
         required: true
+    },
+    timestamps: {
+        type: String,
+        required: true
     }
-}, {timestamps: true})
+}, /* {timestamps: true} */)
 
-export const Message = mongoose.model('messages', messageSchema) */
+export const Message = mongoose.model('messages', messageSchema)

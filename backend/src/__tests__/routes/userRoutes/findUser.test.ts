@@ -5,16 +5,6 @@ import { User } from "../../../models/user";
 import jwt from "jsonwebtoken"
 import "dotenv/config"
 
-beforeEach(async () => {
-	await mongoose.connect("mongodb://localhost:27017/acmedb")
-    await User.create(userInput)
-})
-
-afterEach(async () => {
-    await mongoose.connection.db.dropDatabase()
-	await mongoose.connection.close()
-})
-
 const userInput = {
     name: "testuser",
     email: "testuser@gmail.com",
@@ -27,6 +17,16 @@ const notFoundUserInput = {
     email: "testuser23@gmail.com",
     password: "testpass23"
 }
+
+beforeEach(async () => {
+	await mongoose.connect("mongodb://localhost:27017/acmedb")
+    await User.create(userInput)
+})
+
+afterEach(async () => {
+    await mongoose.connection.db.dropDatabase()
+	await mongoose.connection.close()
+})
 
 describe("Finding single user", () => {
     it("Sends 200 OK if user is found", async () => {

@@ -4,17 +4,6 @@ import mongoose from "mongoose";
 import bcrypt from 'bcrypt'
 import { User } from "../../../models/user";
 
-beforeEach(async () => {
-	await mongoose.connect("mongodb://localhost:27017/acmedb")
-    await User.create(userInput)
-    await User.create(alreadyLoggedInUserInput)
-})
-
-afterEach(async () => {
-	await mongoose.connection.db.dropDatabase()
-	await mongoose.connection.close()
-})
-
 const userInput = {
     name: "testuser",
     email: "testuser@gmail.com",
@@ -47,6 +36,17 @@ const badLoginInputPass = {
     email: "testuser@gmail.com",
     password: "wrongpass"
 }
+
+beforeEach(async () => {
+	await mongoose.connect("mongodb://localhost:27017/acmedb")
+    await User.create(userInput)
+    await User.create(alreadyLoggedInUserInput)
+})
+
+afterEach(async () => {
+	await mongoose.connection.db.dropDatabase()
+	await mongoose.connection.close()
+})
 
 describe("Logging in as user", () => {
     it("Sends 200 OK if login is successful", async () => {
