@@ -38,55 +38,51 @@ describe("Finding single user", () => {
         }
         const token = jwt.sign(foundUserObj, process.env.JSONTOKEN!)
         try {
-            await supertest(app)
+            const response = await supertest(app)
             .get(`/api/users/${userInput.email}`)
             .set("Authorization", `Bearer ${token}`)
-            .expect(200)
-            .then(async (response) => {
-                expect(response.body.message).toBe("User found")
-            })
+            expect(response.status).toBe(200)
+            expect(response.body.message).toBe("User found")
         } catch (error) {
             console.log(error)
+            throw Error
         } 
     })
     it("Sends 404 if session token is not found", async () => {
         try {
-            await supertest(app)
+            const response = await supertest(app)
             .get(`/api/users/${userInput.email}`)
-            .expect(404)
-            .then(async (response) => {
-                expect(response.body.message).toBe("No authorization token found")
-            })
+            expect(response.status).toBe(404)
+            expect(response.body.message).toBe("No authorization token found")
         } catch (error) {
             console.log(error)
+            throw Error
         } 
     })
     it("Sends 401 if session token is invalid", async () => {
         try {
             const token = jwt.sign(userInput, process.env.JSONTOKEN!)
-            await supertest(app)
+            const response = await supertest(app)
             .get(`/api/users/${notFoundUserInput.email}`)
             .set("Authorization", `Bearer ${token}`)
-            .expect(401)
-            .then(async (response) => {
-                expect(response.body.message).toBe("No email matches this session")
-            })
+            expect(response.status).toBe(401)
+            expect(response.body.message).toBe("No email matches this session")
         } catch (error) {
             console.log(error)
+            throw Error
         } 
     })
     it("Sends 404 if user is not found", async () => {
         try {
             const token = jwt.sign(notFoundUserInput, process.env.JSONTOKEN!)
-            await supertest(app)
+            const response = await supertest(app)
             .get(`/api/users/${notFoundUserInput.email}`)
             .set("Authorization", `Bearer ${token}`)
-            .expect(404)
-            .then(async (response) => {
-                expect(response.body.message).toBe("No user found")
-            })
+            expect(response.status).toBe(404)
+            expect(response.body.message).toBe("No user found")
         } catch (error) {
             console.log(error)
+            throw Error
         } 
     })
 })

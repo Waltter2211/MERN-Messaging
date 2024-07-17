@@ -26,27 +26,25 @@ describe("Verifying session", () => {
     it("Sends 200 OK if token is found", async () => {
         try {
             const token = jwt.sign(userInput, process.env.JSONTOKEN!)
-            await supertest(app)
+            const response = await supertest(app)
             .get("/api/login/")
             .set("Authorization", `Bearer ${token}`)
-            .expect(200)
-            .then(async (response) => {
-                expect(response.body.message).toBe("Session verified successfully")
-            })
+            expect(response.status).toBe(200)
+            expect(response.body.message).toBe("Session verified successfully")
         } catch (error) {
             console.log(error)
+            throw Error
         } 
     })
     it("Sends 404 if token is not found", async () => {
         try {
-            await supertest(app)
+            const response = await supertest(app)
             .get("/api/login/")
-            .expect(404)
-            .then(async (response) => {
-                expect(response.body.message).toBe("No authorization token found")
-            })
+            expect(response.status).toBe(404)
+            expect(response.body.message).toBe("No authorization token found")
         } catch (error) {
             console.log(error)
+            throw Error
         } 
     })
 })

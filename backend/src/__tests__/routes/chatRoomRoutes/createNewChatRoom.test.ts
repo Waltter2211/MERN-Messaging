@@ -49,16 +49,15 @@ describe("Creating new chatroom", () => {
             const foundUser2 = await User.findOne({ email: userInput2.email })
             const userObj = { user: foundUser2!.email }
             const token = jwt.sign(userInput, process.env.JSONTOKEN!)
-            await supertest(app)
+            const response = await supertest(app)
             .post(`/api/chatRooms/${foundUser!.email}`)
             .send(userObj)
             .set("Authorization", `Bearer ${token}`)
-            .expect(200)
-            .then(async (response) => {
-                expect(response.body.message).toBe("Successfully added user to contacts")
-            })
+            expect(response.status).toBe(200)
+            expect(response.body.message).toBe("Successfully added user to contacts")
         } catch (error) {
             console.log(error)
+            throw Error
         } 
     })
     it("Sends 404 if authorization token is not found", async () => {
@@ -66,15 +65,14 @@ describe("Creating new chatroom", () => {
             const foundUser = await User.findOne({ email: userInput.email })
             const foundUser2 = await User.findOne({ email: userInput2.email })
             const userObj = { user: foundUser2!.email }
-            await supertest(app)
+            const response = await supertest(app)
             .post(`/api/chatRooms/${foundUser!.email}`)
             .send(userObj)
-            .expect(404)
-            .then(async (response) => {
-                expect(response.body.message).toBe("No authorization token found")
-            })
+            expect(response.status).toBe(404)
+            expect(response.body.message).toBe("No authorization token found")
         } catch (error) {
             console.log(error)
+            throw Error
         } 
     })
     it("Sends 401 if user doesn't match session", async () => {
@@ -82,16 +80,15 @@ describe("Creating new chatroom", () => {
             const foundUser2 = await User.findOne({ email: userInput2.email })
             const userObj = { user: foundUser2!.email }
             const token = jwt.sign(userInput, process.env.JSONTOKEN!)
-            await supertest(app)
+            const response = await supertest(app)
             .post(`/api/chatRooms/${foundUser2!.email}`)
             .send(userObj)
             .set("Authorization", `Bearer ${token}`)
-            .expect(401)
-            .then(async (response) => {
-                expect(response.body.message).toBe("No user matches this session")
-            })
+            expect(response.status).toBe(401)
+            expect(response.body.message).toBe("No user matches this session")
         } catch (error) {
             console.log(error)
+            throw Error
         } 
     })
     it("Sends 404 if user is not found", async () => {
@@ -99,16 +96,15 @@ describe("Creating new chatroom", () => {
             const foundUser = await User.findOne({ email: userInput.email })
             const userObj = { user: notFoundUserInput!.email }
             const token = jwt.sign(userInput, process.env.JSONTOKEN!)
-            await supertest(app)
+            const response = await supertest(app)
             .post(`/api/chatRooms/${foundUser!.email}`)
             .send(userObj)
             .set("Authorization", `Bearer ${token}`)
-            .expect(404)
-            .then(async (response) => {
-                expect(response.body.message).toBe("User not found")
-            })
+            expect(response.status).toBe(404)
+            expect(response.body.message).toBe("User not found")
         } catch (error) {
             console.log(error)
+            throw Error
         } 
     })
     it("Sends 401 if trying to create chatroom with yourself", async () => {
@@ -116,16 +112,15 @@ describe("Creating new chatroom", () => {
             const foundUser = await User.findOne({ email: userInput.email })
             const userObj = { user: foundUser!.email }
             const token = jwt.sign(userInput, process.env.JSONTOKEN!)
-            await supertest(app)
+            const response = await supertest(app)
             .post(`/api/chatRooms/${foundUser!.email}`)
             .send(userObj)
             .set("Authorization", `Bearer ${token}`)
-            .expect(401)
-            .then(async (response) => {
-                expect(response.body.message).toBe("Cannot create room with yourself")
-            })
+            expect(response.status).toBe(401)
+            expect(response.body.message).toBe("Cannot create room with yourself")
         } catch (error) {
             console.log(error)
+            throw Error
         } 
     })
     it("Sends 401 if room already exists", async () => {
@@ -139,16 +134,15 @@ describe("Creating new chatroom", () => {
             await ChatRoom.create(chatRoomObj)
             const userObj = { user: foundUser3!.email }
             const token = jwt.sign(userInput, process.env.JSONTOKEN!)
-            await supertest(app)
+            const response = await supertest(app)
             .post(`/api/chatRooms/${foundUser!.email}`)
             .send(userObj)
             .set("Authorization", `Bearer ${token}`)
-            .expect(401)
-            .then(async (response) => {
-                expect(response.body.message).toBe("Room already exists")
-            })
+            expect(response.status).toBe(401)
+            expect(response.body.message).toBe("Room already exists")
         } catch (error) {
             console.log(error)
+            throw Error
         } 
     })
 })

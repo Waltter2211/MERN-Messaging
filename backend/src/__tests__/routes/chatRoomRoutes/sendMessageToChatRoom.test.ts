@@ -57,16 +57,15 @@ describe("Sending message to chatroom", () => {
                 messageBody: "test message",
                 timestamps: new Date().toLocaleTimeString()
             }
-            await supertest(app)
+            const response = await supertest(app)
             .put(`/api/chatRooms/${foundChatRoom!._id}/${foundUser!._id}`)
             .send(messageObj)
             .set("Authorization", `Bearer ${token}`)
-            .expect(200)
-            .then(async (response) => {
-                expect(response.body.message).toBe("Message sent successfully")
-            })
+            expect(response.status).toBe(200)
+            expect(response.body.message).toBe("Message sent successfully")
         } catch (error) {
             console.log(error)
+            throw Error
         } 
     })
     it("Sends 404 if authorization token is not found", async () => {
@@ -84,15 +83,14 @@ describe("Sending message to chatroom", () => {
                 messageBody: "test message",
                 timestamps: new Date().toLocaleTimeString()
             }
-            await supertest(app)
+            const response = await supertest(app)
             .put(`/api/chatRooms/${foundChatRoom!._id}/${foundUser!._id}`)
             .send(messageObj)
-            .expect(404)
-            .then(async (response) => {
-                expect(response.body.message).toBe("No authorization token found")
-            })
+            expect(response.status).toBe(404)
+            expect(response.body.message).toBe("No authorization token found")
         } catch (error) {
             console.log(error)
+            throw Error
         } 
     })
     it("Sends 401 if user doesn't match session", async () => {
@@ -115,16 +113,15 @@ describe("Sending message to chatroom", () => {
                 email: foundUser!.email
             }
             const token = jwt.sign(userTokenObj, process.env.JSONTOKEN!)
-            await supertest(app)
+            const response = await supertest(app)
             .put(`/api/chatRooms/${foundChatRoom!._id}/${foundUser2!._id}`)
             .send(messageObj)
             .set("Authorization", `Bearer ${token}`)
-            .expect(401)
-            .then(async (response) => {
-                expect(response.body.message).toBe("No user matches this session")
-            })
+            expect(response.status).toBe(401)
+            expect(response.body.message).toBe("No user matches this session")
         } catch (error) {
             console.log(error)
+            throw Error
         } 
     })
     it("Sends 404 if chatroom is not found", async () => {
@@ -141,16 +138,15 @@ describe("Sending message to chatroom", () => {
                 timestamps: new Date().toLocaleTimeString()
             }
             const notFoundChatRoomId = new mongoose.Types.ObjectId()
-            await supertest(app)
+            const response = await supertest(app)
             .put(`/api/chatRooms/${notFoundChatRoomId}/${foundUser!._id}`)
             .send(messageObj)
             .set("Authorization", `Bearer ${token}`)
-            .expect(404)
-            .then(async (response) => {
-                expect(response.body.message).toBe("No chatroom found")
-            })
+            expect(response.status).toBe(404)
+            expect(response.body.message).toBe("No chatroom found")
         } catch (error) {
             console.log(error)
+            throw Error
         } 
     })
     it("Sends 401 if user is not authorized to send messages", async () => {
@@ -174,16 +170,15 @@ describe("Sending message to chatroom", () => {
                 messageBody: "test message",
                 timestamps: new Date().toLocaleTimeString()
             }
-            await supertest(app)
+            const response = await supertest(app)
             .put(`/api/chatRooms/${foundChatRoom!._id}/${foundUser3!._id}`)
             .send(messageObj)
             .set("Authorization", `Bearer ${token}`)
-            .expect(401)
-            .then(async (response) => {
-                expect(response.body.message).toBe("User not authorized to send messages")
-            })
+            expect(response.status).toBe(401)
+            expect(response.body.message).toBe("User not authorized to send messages")
         } catch (error) {
             console.log(error)
+            throw Error
         } 
     })
 })

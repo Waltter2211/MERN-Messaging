@@ -34,27 +34,25 @@ describe("Finding chatroom", () => {
     it("Sends 200 OK if chatroom is found", async () => {
         try {
             const foundChatRoom = await ChatRoom.findOne({})
-            await supertest(app)
+            const response = await supertest(app)
             .get(`/api/chatRooms/${foundChatRoom!._id}`)
-            .expect(200)
-            .then(async (response) => {
-                expect(response.body.message).toBe("Chatroom found")
-            })
+            expect(response.status).toBe(200)
+            expect(response.body.message).toBe("Chatroom found")
         } catch (error) {
             console.log(error)
+            throw Error
         } 
     })
     it("Sends 404 if chatroom is not found", async () => {
         try {
             const notFoundChatRoomId = new mongoose.Types.ObjectId()
-            await supertest(app)
+            const response = await supertest(app)
             .get(`/api/chatRooms/${notFoundChatRoomId}`)
-            .expect(404)
-            .then(async (response) => {
-                expect(response.body.message).toBe("No chatrooms found with provided id")
-            })
+            expect(response.status).toBe(404)
+            expect(response.body.message).toBe("No chatrooms found with provided id")
         } catch (error) {
             console.log(error)
+            throw Error
         } 
     })
 })
