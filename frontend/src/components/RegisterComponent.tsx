@@ -59,7 +59,7 @@ const RegisterComponent = () => {
     <div className="landingPageBackground">
       <div className="landingPageBackgroundOverlay">
         <div className="landingPageSelection">
-          <h2>Register</h2>
+          <h2 data-testid="test-register-header">Register</h2>
           <div className="form-div">
             <form onSubmit={handleRegister}>
               <h3>Name</h3>
@@ -69,7 +69,7 @@ const RegisterComponent = () => {
               <h3>Password</h3>
               <input type="password" required={true} minLength={3} name="password" onChange={handleRegisterForm} value={registerCreds.password} />
               <br></br>
-              <button type="submit">Register</button>
+              <button data-testid="test-register-btn" type="submit">Register</button>
             </form>
           </div>
           <Link to={'/'}>Home</Link>

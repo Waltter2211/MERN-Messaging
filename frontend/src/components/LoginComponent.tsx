@@ -68,15 +68,15 @@ const LoginComponent = () => {
     <div className="landingPageBackground">
       <div className="landingPageBackgroundOverlay">
         <div className="landingPageSelection">
-          <h2>Login</h2>
+          <h2 data-testid="test-login-header">Login</h2>
           <div className="form-div">
             <form onSubmit={handleLogin}>
               <h3>Email</h3>
-              <input type="email" name="email" onChange={handleLoginForm} value={loginCreds.email} />
+              <input data-testid="test-login-email-input" type="email" name="email" onChange={handleLoginForm} value={loginCreds.email} />
               <h3>Password</h3>
-              <input type="password" name="password" onChange={handleLoginForm} value={loginCreds.password} />
+              <input data-testid="test-login-password-input" type="password" name="password" onChange={handleLoginForm} value={loginCreds.password} />
               <br></br>
-              <button type="submit">Log in</button>
+              <button data-testid="test-login-btn" type="submit">Log in</button>
             </form>
           </div>
           <Link to={'/'}>Home</Link>

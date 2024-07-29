@@ -40,7 +40,7 @@ const ProfilePageComponent = () => {
     <div className="profile-page-main-up">
       <h2>MERN-Messaging</h2>
       <h2>{currentUser.loggedInUser.email}</h2>
-      <i onClick={handleLogout} className="fa-solid fa-power-off power-button"></i>
+      <i data-testid="test-logout-btn" onClick={handleLogout} className="fa-solid fa-power-off power-button"></i>
     </div>
     <div className="profile-page-main-down">
       <div className="profile-page-contacts-list">
@@ -60,7 +60,7 @@ const ProfilePageComponent = () => {
         </div>
       </div>
       <div className="profile-page-message-window">
-        {selected ? <ChatroomSingle setSelected={setSelected} /> : <p>No current active chat rooms</p>}
+        {selected ? <ChatroomSingle setSelected={setSelected} /> : <p>No current active chatrooms</p>}
       </div>
       {newContactSelected ? <AddNewContactComponent newContactSelected={newContactSelected} setNewContactSelected={setNewContactSelected} /> : <div></div>}
     </div>
