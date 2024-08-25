@@ -49,7 +49,7 @@ export const createNewChatRoom = async (req:Request, res:Response) => {
                     }
                     const foundRoom = await ChatRoom.findOne({ $or: [ { users: [chatObj.users[0], chatObj.users[1] ] }, { users: [chatObj.users[1], chatObj.users[0] ] } ] })
                     if (foundRoom) {
-                            res.status(401).send({ message: 'Room already exists' })
+                        res.status(401).send({ message: 'Room already exists' })
                     } else {
                         await ChatRoom.create(chatObj)
                         const newChat = await ChatRoom.findOne({ users: [chatObj.users[0], chatObj.users[1]] })

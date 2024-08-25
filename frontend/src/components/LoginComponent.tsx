@@ -5,6 +5,7 @@ import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { UserContext } from "../utils/UserContext";
 import { notifyError } from "../services/toastifyService";
+import socket from "../socket";
 
 const LoginComponent = () => {
 
@@ -46,6 +47,7 @@ const LoginComponent = () => {
     else {
       localStorage.setItem('token', userCreds.token)
       user.setLoggedInUser({name: '', email: userCreds.userCredentials.email, sessionToken: userCreds.token})
+      socket.connect()
       navigate('/profile')
     }
   }

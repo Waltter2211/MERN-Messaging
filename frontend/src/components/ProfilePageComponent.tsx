@@ -8,6 +8,7 @@ import ChatroomSingle from "./ChatRoomSingle"
 import { Link } from "react-router-dom"
 import { logoutService } from "../services/loginService"
 import AddNewContactComponent from "./AddNewContactComponent"
+import socket from "../socket"
 
 const ProfilePageComponent = () => {
 
@@ -20,6 +21,7 @@ const ProfilePageComponent = () => {
   const handleLogout = () => {
     logoutService(currentUser.loggedInUser.email, currentUser.loggedInUser.sessionToken).then(() => {
       localStorage.clear()
+      socket.disconnect()
       location.reload()
     })
   }
