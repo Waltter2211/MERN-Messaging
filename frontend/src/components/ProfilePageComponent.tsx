@@ -13,10 +13,7 @@ import socket from "../socket"
 const ProfilePageComponent = () => {
 
   const currentUser = useContext(UserContext)
-  const { data, isLoading, error } = useQuery('userChatroomData', () => userService(currentUser.loggedInUser.email, currentUser.loggedInUser.sessionToken), {
-    refetchInterval: 2000,
-    refetchOnWindowFocus: true
-  })
+  const { data, isLoading, error } = useQuery('userChatroomData', () => userService(currentUser.loggedInUser.email, currentUser.loggedInUser.sessionToken))
 
   const handleLogout = () => {
     logoutService(currentUser.loggedInUser.email, currentUser.loggedInUser.sessionToken).then(() => {
@@ -36,6 +33,11 @@ const ProfilePageComponent = () => {
   const { chatRooms } = data
 
   chatRooms.sort((roomA:ChatRoomType, roomB:ChatRoomType) => roomB.updatedAt.localeCompare(roomA.updatedAt))
+
+  chatRooms.forEach((roomObj: { _id: string }) => {
+    /* console.log(roomObj) */
+    socket.emit('join room', roomObj._id)
+  });
 
   return (
     <>

@@ -8,16 +8,14 @@ import { LoggedInUser } from "../types/userContextTypes"
 import { logoutService } from "../services/loginService"
 import { ToastContainer } from "react-toastify"
 import { notifyError } from "../services/toastifyService"
+import socket from "../socket"
 
 const ChatroomSingle = ({setSelected}: {setSelected: Dispatch<SetStateAction<boolean>>}) => {
 
   const { chatRoomId } = useParams()
   const currentUser = useContext(UserContext)
   const [userMessage, setUserMessage] = useState('')
-  const { data, isLoading, error, refetch } = useQuery(`chatRoomSingleData${chatRoomId}`, () => chatRoomService(chatRoomId as string), {
-    /* refetchInterval: 2000a
-    refetchOnWindowFocus: true */
-  })
+  const { data, isLoading, error, refetch } = useQuery(`chatRoomSingleData${chatRoomId}`, () => chatRoomService(chatRoomId as string))
 
   const chatRef = useRef<HTMLDivElement>(null)
 
@@ -48,8 +46,10 @@ const ChatroomSingle = ({setSelected}: {setSelected: Dispatch<SetStateAction<boo
 
     if (localStrorageUserTokenObj) {
       chatRoomSendMessageService(data._id, currentUserId[0]._id, localStrorageUserTokenObj, messageObj).then(() => {
-        refetch()
+        /* refetch() */
         setUserMessage('')
+        socket.emit('message', userMessage)
+        console.log('emitting message')
       })
     } else {
       notifyError('Session token has expired, please login again')
@@ -59,6 +59,10 @@ const ChatroomSingle = ({setSelected}: {setSelected: Dispatch<SetStateAction<boo
       },  5000)
     }
   }
+
+  socket.on('ping refetch', () => {
+    refetch()
+  })
 
   const filteredUser = users.filter((user:ChatRoomSingleUsers) => user.email !== currentUser.loggedInUser.email)
   const filteredCurrentUser = users.filter((user:ChatRoomSingleUsers) => user.email === currentUser.loggedInUser.email)

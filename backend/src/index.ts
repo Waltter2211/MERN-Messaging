@@ -22,7 +22,14 @@ instrument(io, {
 })
 
 io.on('connection', (socket) => {
-    console.log(socket.id)
+
+    socket.on('join room', (room:string) => {
+        socket.join(room)
+    })
+
+    socket.on('message', (message:string) => {
+        socket.emit('ping refetch', message)
+    })
 })
 
 io.on('disconnect', (socket) => {

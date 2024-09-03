@@ -4,6 +4,7 @@ import { createNewChatRoomService } from "../services/chatRoomService"
 import { ToastContainer } from "react-toastify"
 import { logoutService } from "../services/loginService"
 import { notifyError, notifySuccess } from "../services/toastifyService"
+import socket from "../socket"
 
 const AddNewContactComponent = ({setNewContactSelected, newContactSelected}: {newContactSelected:React.ComponentState, setNewContactSelected:Dispatch<SetStateAction<boolean>>}) => {
 
@@ -31,6 +32,8 @@ const AddNewContactComponent = ({setNewContactSelected, newContactSelected}: {ne
         notifyError(foundUserData.message)
       }
       else {
+        socket.emit('join room', foundUserData.createdRoom._id)
+        console.log(foundUserData.createdRoom._id)
         notifySuccess(foundUserData.message)
       }
     } else {

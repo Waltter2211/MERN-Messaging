@@ -35,7 +35,7 @@ const LoginComponent = () => {
     }
 
     const userCreds = await loginService(userObj)
-    console.log(userCreds)
+    /* console.log(userCreds) */
     if (userCreds.status === 404) {
       console.log("display not found error message")
       notifyError(userCreds.message)
@@ -47,6 +47,7 @@ const LoginComponent = () => {
     else {
       localStorage.setItem('token', userCreds.token)
       user.setLoggedInUser({name: '', email: userCreds.userCredentials.email, sessionToken: userCreds.token})
+      socket.auth = { name: userCreds.userCredentials.email }
       socket.connect()
       navigate('/profile')
     }

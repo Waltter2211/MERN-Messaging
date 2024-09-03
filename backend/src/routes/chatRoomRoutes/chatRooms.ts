@@ -52,7 +52,7 @@ export const createNewChatRoom = async (req:Request, res:Response) => {
                         res.status(401).send({ message: 'Room already exists' })
                     } else {
                         await ChatRoom.create(chatObj)
-                        const newChat = await ChatRoom.findOne({ users: [chatObj.users[0], chatObj.users[1]] })
+                        const newChat = await ChatRoom.findOne({ users: [chatObj.users[0], chatObj.users[1]] }).populate('users')
                         if (!newChat) {
                             throw new Error('Some error with creating chat happened')
                         } else {
@@ -60,7 +60,7 @@ export const createNewChatRoom = async (req:Request, res:Response) => {
                             const updatedUser2Obj = {...user2Obj, chatRooms: user2Obj.chatRooms.push(newChat._id)}
                             await User.findByIdAndUpdate({ _id: chatObj.users[0] }, updatedUser1Obj)
                             await User.findByIdAndUpdate({ _id: chatObj.users[1] }, updatedUser2Obj)
-                            res.send({ message: 'Successfully added user to contacts' })
+                            res.send({ message: 'Successfully added user to contacts', createdRoom: newChat })
                         } 
                     }
                 }
