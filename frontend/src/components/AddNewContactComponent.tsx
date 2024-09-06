@@ -33,7 +33,9 @@ const AddNewContactComponent = ({setNewContactSelected, newContactSelected}: {ne
       }
       else {
         socket.emit('join room', foundUserData.createdRoom._id)
-        console.log(foundUserData.createdRoom._id)
+        setTimeout(() => {
+          socket.emit('message', foundUserData.createdRoom._id)
+        }, 5000)
         notifySuccess(foundUserData.message)
       }
     } else {

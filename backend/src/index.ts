@@ -27,8 +27,9 @@ io.on('connection', (socket) => {
         socket.join(room)
     })
 
-    socket.on('message', (message:string) => {
-        socket.emit('ping refetch', message)
+    socket.on('message', (roomId:string) => {
+        io.to(roomId).emit('ping refetch')
+        console.log('received in backend')
     })
 })
 

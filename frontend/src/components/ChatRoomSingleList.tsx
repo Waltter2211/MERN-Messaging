@@ -3,14 +3,17 @@ import { useContext } from "react"
 import { UserContext } from "../utils/UserContext"
 import { useQuery } from "react-query"
 import { ChatRoomSingleUsers } from "../types/chatRoomTypes"
+import socket from "../socket"
 
 const ChatRoomSingleList = ({ chatRoomId }: { chatRoomId:string }) => {
 
   const currentUser = useContext(UserContext)
 
-  const { data, isLoading, error } = useQuery(`chatRoomSingleData${chatRoomId}`, () => chatRoomService(chatRoomId), {
-    refetchInterval: 2000,
-    refetchOnWindowFocus: true
+  const { data, isLoading, error, refetch } = useQuery(`chatRoomSingleData${chatRoomId}`, () => chatRoomService(chatRoomId))
+
+  socket.on('ping refetch', () => {
+    console.log('refetched')
+    refetch()
   })
 
   if (isLoading) return <div>loading</div>
@@ -35,3 +38,5 @@ const ChatRoomSingleList = ({ chatRoomId }: { chatRoomId:string }) => {
 }
 
 export default ChatRoomSingleList
+
+// {messages[messages.length -1]?.sender}: {messages[messages.length -1]?.messageBody}

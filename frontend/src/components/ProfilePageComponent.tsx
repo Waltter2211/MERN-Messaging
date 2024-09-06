@@ -9,15 +9,22 @@ import { Link } from "react-router-dom"
 import { logoutService } from "../services/loginService"
 import AddNewContactComponent from "./AddNewContactComponent"
 import socket from "../socket"
+import { pingHelperFunc } from "../helpers/pingHelper"
 
 const ProfilePageComponent = () => {
 
   const currentUser = useContext(UserContext)
-  const { data, isLoading, error } = useQuery('userChatroomData', () => userService(currentUser.loggedInUser.email, currentUser.loggedInUser.sessionToken))
+  const { data, isLoading, error, refetch } = useQuery('userChatroomData', () => userService(currentUser.loggedInUser.email, currentUser.loggedInUser.sessionToken))
+
+  socket.on('ping refetch', () => {
+    console.log('refetched')
+    refetch()
+  })
 
   const handleLogout = () => {
     logoutService(currentUser.loggedInUser.email, currentUser.loggedInUser.sessionToken).then(() => {
       localStorage.clear()
+      pingHelperFunc(chatRooms, socket)
       socket.disconnect()
       location.reload()
     })
@@ -31,6 +38,7 @@ const ProfilePageComponent = () => {
   if (error) return <div>error</div>
 
   const { chatRooms } = data
+  console.log(chatRooms)
 
   chatRooms.sort((roomA:ChatRoomType, roomB:ChatRoomType) => roomB.updatedAt.localeCompare(roomA.updatedAt))
 

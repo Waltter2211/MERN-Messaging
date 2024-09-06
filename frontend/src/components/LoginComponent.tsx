@@ -6,6 +6,8 @@ import 'react-toastify/dist/ReactToastify.css';
 import { UserContext } from "../utils/UserContext";
 import { notifyError } from "../services/toastifyService";
 import socket from "../socket";
+import { userService } from "../services/userService";
+import { pingHelperFunc } from "../helpers/pingHelper";
 
 const LoginComponent = () => {
 
@@ -19,6 +21,8 @@ const LoginComponent = () => {
     email: '',
     password: ''
   })
+
+  console.log(user)
 
   const handleLoginForm = (event:React.ChangeEvent<HTMLInputElement>) => {
     setLoginCreds((prev) => {
@@ -35,7 +39,6 @@ const LoginComponent = () => {
     }
 
     const userCreds = await loginService(userObj)
-    /* console.log(userCreds) */
     if (userCreds.status === 404) {
       console.log("display not found error message")
       notifyError(userCreds.message)
@@ -49,6 +52,8 @@ const LoginComponent = () => {
       user.setLoggedInUser({name: '', email: userCreds.userCredentials.email, sessionToken: userCreds.token})
       socket.auth = { name: userCreds.userCredentials.email }
       socket.connect()
+      const userChatrooms = await userService(userCreds.userCredentials.email, userCreds.token)
+      pingHelperFunc(userChatrooms.chatRooms, socket)
       navigate('/profile')
     }
   }

@@ -47,8 +47,9 @@ const ChatroomSingle = ({setSelected}: {setSelected: Dispatch<SetStateAction<boo
     if (localStrorageUserTokenObj) {
       chatRoomSendMessageService(data._id, currentUserId[0]._id, localStrorageUserTokenObj, messageObj).then(() => {
         /* refetch() */
+        console.log(data)
         setUserMessage('')
-        socket.emit('message', userMessage)
+        socket.emit('message', data._id)
         console.log('emitting message')
       })
     } else {
