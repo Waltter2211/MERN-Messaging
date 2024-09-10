@@ -22,8 +22,6 @@ const LoginComponent = () => {
     password: ''
   })
 
-  console.log(user)
-
   const handleLoginForm = (event:React.ChangeEvent<HTMLInputElement>) => {
     setLoginCreds((prev) => {
       return {...prev, [event.target.name]: event.target.value}

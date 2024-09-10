@@ -12,7 +12,6 @@ const ChatRoomSingleList = ({ chatRoomId }: { chatRoomId:string }) => {
   const { data, isLoading, error, refetch } = useQuery(`chatRoomSingleData${chatRoomId}`, () => chatRoomService(chatRoomId))
 
   socket.on('ping refetch', () => {
-    console.log('refetched')
     refetch()
   })
 
@@ -38,5 +37,3 @@ const ChatRoomSingleList = ({ chatRoomId }: { chatRoomId:string }) => {
 }
 
 export default ChatRoomSingleList
-
-// {messages[messages.length -1]?.sender}: {messages[messages.length -1]?.messageBody}

@@ -13,7 +13,7 @@ const io = new Server(httpServer, {
     cors: {
         origin: ['http://localhost:5000', 'https://admin.socket.io'],
         credentials: true
-    }
+    },
 })
 
 instrument(io, {
@@ -23,18 +23,14 @@ instrument(io, {
 
 io.on('connection', (socket) => {
 
-    socket.on('join room', (room:string) => {
-        socket.join(room)
+    socket.on('join room', (roomId:string) => {
+        socket.join(roomId)
     })
 
     socket.on('message', (roomId:string) => {
         io.to(roomId).emit('ping refetch')
         console.log('received in backend')
     })
-})
-
-io.on('disconnect', (socket) => {
-    console.log('disconnect ', socket.id)
 })
 
 httpServer.listen(PORT, () => {

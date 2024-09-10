@@ -248,10 +248,12 @@ body {
 
 .single-chat-room-input-div > form > textarea {
     width: 50%;
+    height: auto;
     resize: none;
     font-size: 15px;
     outline: none;
     border-radius: 5px;
+    overflow: hidden;
 }
 
 .single-chat-room-input-div > form > button {
@@ -353,3 +355,7 @@ body {
     display: flex;
     justify-content: flex-end;
 }
+
+/* .chatroom-messagebox {
+    field-sizing: normal;
+} */

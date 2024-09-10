@@ -47,7 +47,6 @@ const ChatroomSingle = ({setSelected}: {setSelected: Dispatch<SetStateAction<boo
     if (localStrorageUserTokenObj) {
       chatRoomSendMessageService(data._id, currentUserId[0]._id, localStrorageUserTokenObj, messageObj).then(() => {
         /* refetch() */
-        console.log(data)
         setUserMessage('')
         socket.emit('message', data._id)
         console.log('emitting message')
@@ -104,7 +103,7 @@ const ChatroomSingle = ({setSelected}: {setSelected: Dispatch<SetStateAction<boo
         </div>
         <div className="single-chat-room-input-div">
             <form onSubmit={handleMessageSubmit}>
-                <textarea placeholder="Message..." onChange={(event) => setUserMessage(event.target.value)} value={userMessage} />
+                <textarea className="chatroom-messagebox" placeholder="Message..." onChange={(event) => setUserMessage(event.target.value)} value={userMessage} />
                 <button className="submit-button" type="submit"><i className="fa-solid fa-square-caret-right"></i></button>
             </form>
         </div>

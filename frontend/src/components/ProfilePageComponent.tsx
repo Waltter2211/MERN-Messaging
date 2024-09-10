@@ -17,7 +17,6 @@ const ProfilePageComponent = () => {
   const { data, isLoading, error, refetch } = useQuery('userChatroomData', () => userService(currentUser.loggedInUser.email, currentUser.loggedInUser.sessionToken))
 
   socket.on('ping refetch', () => {
-    console.log('refetched')
     refetch()
   })
 
@@ -38,14 +37,12 @@ const ProfilePageComponent = () => {
   if (error) return <div>error</div>
 
   const { chatRooms } = data
-  console.log(chatRooms)
 
   chatRooms.sort((roomA:ChatRoomType, roomB:ChatRoomType) => roomB.updatedAt.localeCompare(roomA.updatedAt))
 
   chatRooms.forEach((roomObj: { _id: string }) => {
-    /* console.log(roomObj) */
     socket.emit('join room', roomObj._id)
-  });
+  })
 
   return (
     <>
