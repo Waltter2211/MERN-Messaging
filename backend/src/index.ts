@@ -5,15 +5,15 @@ import { Server } from 'socket.io'
 import { instrument } from '@socket.io/admin-ui'
 import { createServer } from 'http'
 
-const PORT = 3000;
+const PORT = 3000
 
 const httpServer = createServer(app)
 
 const io = new Server(httpServer, {
     cors: {
-        origin: ['http://localhost:5000', 'https://admin.socket.io'],
+        origin: [`${process.env.DOCKER_FRONTEND_URL}`, 'https://admin.socket.io'],
         credentials: true
-    },
+    }
 })
 
 instrument(io, {
@@ -25,6 +25,10 @@ io.on('connection', (socket) => {
 
     socket.on('join room', (roomId:string) => {
         socket.join(roomId)
+    })
+
+    socket.on('add room', (roomId:string) => {
+        io.to(roomId).emit('ping refetch')
     })
 
     socket.on('message', (roomId:string) => {

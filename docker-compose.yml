@@ -19,6 +19,7 @@ services:
     environment:
       - MONGO_URL=mongodb://mongo:27017/messaging-app-prod
       - JSONTOKEN=jsontoken
+      - DOCKER_FRONTEND_URL=http://localhost:5001
     networks:
       - fs-app
 

@@ -14,7 +14,9 @@ import { pingHelperFunc } from "../helpers/pingHelper"
 const ProfilePageComponent = () => {
 
   const currentUser = useContext(UserContext)
-  const { data, isLoading, error, refetch } = useQuery('userChatroomData', () => userService(currentUser.loggedInUser.email, currentUser.loggedInUser.sessionToken))
+  const { data, isLoading, error, refetch } = useQuery('userChatroomData', () => userService(currentUser.loggedInUser.email, currentUser.loggedInUser.sessionToken), {
+    refetchInterval: 30000
+  })
 
   socket.on('ping refetch', () => {
     refetch()

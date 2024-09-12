@@ -37,7 +37,7 @@ const ChatroomSingle = ({setSelected}: {setSelected: Dispatch<SetStateAction<boo
 
   const handleMessageSubmit = async (event:React.FormEvent) => {
     event.preventDefault()
-    const currentUserId = data.users.filter((user:LoggedInUser) => user.email === currentUser.loggedInUser.email)
+    const currentUserId = users.filter((user:LoggedInUser) => user.email === currentUser.loggedInUser.email)
     const messageObj = {
       messageBody: userMessage
     }
