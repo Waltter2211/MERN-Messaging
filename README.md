@@ -4,28 +4,28 @@
 ![Express](https://img.shields.io/badge/Express-v4.19.2-orange)
 ![React](https://img.shields.io/badge/React-v18.2.0-blue)
 
-## Description
+## Description:
 Simple messaging app where you can add contacts and send messages.
 
-## Technologies used
+## Technologies used:
 * MongoDB
 * NodeJS
 * React
 * Socket.io
 
-## Languages used
+## Languages used:
   Typescript
 
-## Requirements
+## Requirements:
 * MongoDB database
 * Bash terminal
 
-## To-Dos
+## To-Dos:
 * Create remaining tests
 * Overall cleanup the code
 * Finish UI
 
-## Images
+## Images:
 
 ### Landing page
 ![Landing page](https://github.com/Waltter2211/MERN-Messaging/blob/main/images/landing_page.JPG)
