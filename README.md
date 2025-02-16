@@ -23,6 +23,7 @@ Simple messaging app where you can add contacts and send messages.
 ## To-Dos
 * Create remaining tests
 * Overall cleanup the code
+* Finish UI
 
 ## Images
 
