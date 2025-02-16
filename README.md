@@ -11,6 +11,7 @@ Simple messaging app where you can add contacts and send messages.
 * MongoDB
 * NodeJS
 * React
+* Socket.io
 
 ## Languages used
   Typescript
@@ -22,3 +23,17 @@ Simple messaging app where you can add contacts and send messages.
 ## To-Dos
 * Create remaining tests
 * Overall cleanup the code
+
+## Images
+
+### Landing page
+![Landing page](https://github.com/Waltter2211/MERN-Messaging/blob/main/images/landing_page.JPG)
+
+### Login page
+![Login page](https://github.com/Waltter2211/MERN-Messaging/blob/main/images/login_page.JPG)
+
+### Home page
+![Home page](https://github.com/Waltter2211/MERN-Messaging/blob/main/images/home_page_chatroom.JPG)
+
+### Add new contact page
+![Add new contact page](https://github.com/Waltter2211/MERN-Messaging/blob/main/images/home_page_add_new_contact.JPG)
