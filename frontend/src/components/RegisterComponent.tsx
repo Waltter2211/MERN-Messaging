@@ -1,5 +1,5 @@
 import { useState } from "react"
-import { Link, useNavigate } from "react-router-dom"
+import { useNavigate } from "react-router-dom"
 import { registerService } from "../services/registerService"
 
 import { ToastContainer } from 'react-toastify';
@@ -57,27 +57,28 @@ const RegisterComponent = () => {
     /* transition: Zoom, */
     />
     <div className="landingPageBackground">
-      <div className="landingPageBackgroundOverlay">
         <div className="landingPageSelection">
-          <h2 data-testid="test-register-header">Register</h2>
+          <div className="titleText">
+            <img src="/logo.JPG" data-testid="test-register-header"></img>
+            <h3>Create Account</h3>
+            <p>Start messaging with friends and family</p>
+          </div>
           <div className="form-div">
             <form onSubmit={handleRegister}>
               <h3>Name</h3>
-              <input type="text" required={true} minLength={3} name="name" onChange={handleRegisterForm} value={registerCreds.name} />
+              <input type="text" placeholder="John Doe" required={true} minLength={3} name="name" onChange={handleRegisterForm} value={registerCreds.name} />
               <h3>Email</h3>
-              <input type="email" required={true} minLength={5} name="email" onChange={handleRegisterForm} value={registerCreds.email} />
+              <input type="email" placeholder="you@example.com" required={true} minLength={5} name="email" onChange={handleRegisterForm} value={registerCreds.email} />
               <h3>Password</h3>
-              <input type="password" required={true} minLength={3} name="password" onChange={handleRegisterForm} value={registerCreds.password} />
+              <input type="password" placeholder="********" required={true} minLength={3} name="password" onChange={handleRegisterForm} value={registerCreds.password} />
               <br></br>
-              <button data-testid="test-register-btn" type="submit">Register</button>
+              <button data-testid="test-register-btn" type="submit">Create Account</button>
             </form>
           </div>
-          <Link to={'/'}>Home</Link>
+          <p>Already have an account? <span onClick={() => navigate('/')}>Sign in</span></p>
         </div>
       </div>
-    </div>
     </>
-    
   )
 }
 

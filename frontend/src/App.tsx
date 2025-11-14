@@ -39,8 +39,8 @@ const App = () => {
     <UserContext.Provider value={{ loggedInUser, setLoggedInUser }}>
       <BrowserRouter>
         <Routes>
-          <Route path='/' element={loggedInUser.sessionToken.length === 0 ? <LandingPageComponent /> : <ProfilePageComponent />} />
-          <Route path='/login' element={loggedInUser.sessionToken.length === 0 ? <LoginComponent /> : <ProfilePageComponent />} />
+          <Route path='/' element={loggedInUser.sessionToken.length === 0 ? <LoginComponent /> : <ProfilePageComponent />} />
+          {/* <Route path='/login' element={loggedInUser.sessionToken.length === 0 ? <LoginComponent /> : <ProfilePageComponent />} /> */}
           <Route path='/register' element={loggedInUser.sessionToken.length === 0 ? <RegisterComponent /> : <ProfilePageComponent />} />
           <Route path='/profile' element={loggedInUser.sessionToken.length === 0 ? <LandingPageComponent /> : <ProfilePageComponent />}>
             <Route path=':chatRoomId' />

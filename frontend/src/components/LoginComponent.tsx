@@ -1,5 +1,5 @@
 import { useContext, useState } from "react"
-import { Link, useNavigate } from "react-router-dom"
+import { useNavigate } from "react-router-dom"
 import { loginService } from "../services/loginService"
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
@@ -72,23 +72,26 @@ const LoginComponent = () => {
     /* transition: Zoom, */
     />
     <div className="landingPageBackground">
-      <div className="landingPageBackgroundOverlay">
         <div className="landingPageSelection">
-          <h2 data-testid="test-login-header">Login</h2>
+          <div className="titleText">
+            <img src="/logo.JPG" data-testid="test-register-header"></img>
+            <h3>Welcome Back</h3>
+            <p>Sign in to continue to your conversations</p>
+          </div>
           <div className="form-div">
             <form onSubmit={handleLogin}>
               <h3>Email</h3>
-              <input data-testid="test-login-email-input" type="email" name="email" onChange={handleLoginForm} value={loginCreds.email} />
+              <input data-testid="test-login-email-input" placeholder="you@example.com" type="email" name="email" onChange={handleLoginForm} value={loginCreds.email} />
               <h3>Password</h3>
-              <input data-testid="test-login-password-input" type="password" name="password" onChange={handleLoginForm} value={loginCreds.password} />
+              <input data-testid="test-login-password-input" placeholder="********" type="password" name="password" onChange={handleLoginForm} value={loginCreds.password} />
               <br></br>
-              <button data-testid="test-login-btn" type="submit">Log in</button>
+              <button data-testid="test-login-btn" type="submit">Sign In</button>
             </form>
           </div>
-          <Link to={'/'}>Home</Link>
+          {/* <Link to={'/register'}>Register</Link> */}
+          <p>Don't have an account? <span onClick={() => navigate('/register')}>Sign up</span></p>
         </div>
       </div>
-    </div>
     </>
   )
 }
