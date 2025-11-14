@@ -19,7 +19,7 @@ services:
     environment:
       - MONGO_URL=mongodb://mongo:27017/messaging-app-prod
       - JSONTOKEN=jsontoken
-      - DOCKER_FRONTEND_URL=http://localhost:5001
+      - DOCKER_FRONTEND_URL=http://frontend:80
     networks:
       - fs-app
 
@@ -27,11 +27,11 @@ services:
     build: ./frontend
     container_name: mern-messaging-frontend-cont
     ports:
-      - '5001:5000'
+      - '5001:80'
     depends_on:
       - backend
     environment:
-      - VITE_BACKEND_URL=http://localhost:3001
+      - VITE_BACKEND_URL=http://backend:3000
     networks:
       - fs-app
 

@@ -13,5 +13,8 @@ app.use(cors())
 app.use('/api/users', usersRouter)
 app.use('/api/chatRooms', chatRoomsRouter)
 app.use('/api/login', loginRouter)
+app.get('/', (req, res) => {
+    res.send("works")
+})
 
 export default app

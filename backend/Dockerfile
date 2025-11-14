@@ -1,13 +1,13 @@
 FROM node:23-alpine
 
-WORKDIR /app
-
-COPY package.json package-lock.json .
-
-RUN npm install
+WORKDIR /usr/src/app
 
 COPY . .
 
+RUN npm install
+
+RUN npx tsc
+
 EXPOSE 3000
 
-CMD ["npm","start"]
+CMD ["node","dist/index.js"]
