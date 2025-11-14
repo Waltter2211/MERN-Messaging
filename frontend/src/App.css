@@ -38,7 +38,7 @@ body {
 }
 
 .landingPageSelection {
-    width: 25%;
+    width: 24%;
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -104,6 +104,12 @@ body {
     padding: 10px;
     border: none;
     border-radius: 8px;
+    transition: .1s;
+}
+
+.form-div > form > input:focus {
+    outline: 3px solid rgb(185, 185, 185);
+    transition: .1s;
 }
 
 .form-div > form > button {
@@ -115,6 +121,12 @@ body {
     border: none;
     border-radius: 8px;
     cursor: pointer;
+    transition: .3s;
+}
+
+.form-div > form > button:hover {
+    background-color: rgb(69, 55, 210);
+    transition: .3s;
 }
 
 /* Profile page css */
