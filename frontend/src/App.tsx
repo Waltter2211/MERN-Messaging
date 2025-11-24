@@ -1,7 +1,6 @@
 import { BrowserRouter, Route, Routes } from 'react-router-dom'
 import './App.css'
 import NotFoundComponent from './components/NotFoundComponent'
-import LandingPageComponent from './components/LandingPageComponent'
 import LoginComponent from './components/LoginComponent'
 import RegisterComponent from './components/RegisterComponent'
 import ProfilePageComponent from './components/ProfilePageComponent'
@@ -42,7 +41,7 @@ const App = () => {
           <Route path='/' element={loggedInUser.sessionToken.length === 0 ? <LoginComponent /> : <ProfilePageComponent />} />
           {/* <Route path='/login' element={loggedInUser.sessionToken.length === 0 ? <LoginComponent /> : <ProfilePageComponent />} /> */}
           <Route path='/register' element={loggedInUser.sessionToken.length === 0 ? <RegisterComponent /> : <ProfilePageComponent />} />
-          <Route path='/profile' element={loggedInUser.sessionToken.length === 0 ? <LandingPageComponent /> : <ProfilePageComponent />}>
+          <Route path='/profile' element={loggedInUser.sessionToken.length === 0 ? <LoginComponent /> : <ProfilePageComponent />}>
             <Route path=':chatRoomId' />
           </Route>
           <Route path='*' element={<NotFoundComponent />} />
